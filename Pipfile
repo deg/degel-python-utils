@@ -4,19 +4,20 @@ url = "https://pypi.org/simple"
 verify_ssl = true
 
 [packages]
-# Listed in setup.cfg
+# Listed in setup.cfg too
+blessings = "*"
 
 [dev-packages]
 black = "*"
+build = "*"
 flake8 = "*"
 line-profiler = "*"
 mypy = "*"
+pre-commit = "*"
 pylint = "*"
 pytest = "*"
-twine = "*"
 setuptools = "*"
-build = "*"
-pre-commit = "*"
+twine = "*"
 
 [requires]
 python_version = "3.12"

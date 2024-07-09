@@ -1,6 +1,7 @@
 PACKAGE_NAME=degel-python-utils
 PYTHON=python
 PIPENV=pipenv
+SRC_DIR=src
 
 # Setup project on new machine
 .PHONY: install
@@ -29,7 +30,7 @@ lint:
 # Run all tests
 .PHONY: test
 test:
-	@$(PIPENV) run pytest
+	@PYTHONPATH=$(SRC_DIR) $(PIPENV) run pytest
 
 
 # Build, e.g. for distribution
