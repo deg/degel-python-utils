@@ -44,8 +44,8 @@ verify-changelog:
 
 
 # Verify no uncommitted changes
-.PHONY: verify-clean-working-directory
-verify-clean-working-directory:
+.PHONY: verify-all-committed
+verify-all-committed:
 	@if ! git diff-index --quiet HEAD --; then \
 		echo "There are uncommitted changes in the working directory"; \
 		exit 1; \
@@ -54,7 +54,7 @@ verify-clean-working-directory:
 
 # Build, e.g. for distribution
 .PHONY: build
-build: verify-changelog verify-clean-working-directory lint test
+build: verify-changelog verify-all-committed clean lint test
 	@$(PIPENV) run $(PYTHON) -m build
 
 
@@ -63,6 +63,7 @@ build: verify-changelog verify-clean-working-directory lint test
 .PHONY: publish
 publish: build
 	@$(PIPENV) run twine upload dist/*
+	@git push origin
 	@git tag v$(shell $(PIPENV) run python setup.py --version)
 	@git push origin --tags
 
