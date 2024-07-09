@@ -33,9 +33,28 @@ test:
 	@PYTHONPATH=$(SRC_DIR) $(PIPENV) run pytest
 
 
+# Verify changelog contains the current version
+.PHONY: verify-changelog
+verify-changelog:
+	@VERSION=$$( $(PIPENV) run python setup.py --version ) && \
+	if ! grep -q "\[v$$VERSION\]" CHANGELOG.md; then \
+		echo "CHANGELOG.md does not contain the current version ($$VERSION)"; \
+		exit 1; \
+	fi
+
+
+# Verify no uncommitted changes
+.PHONY: verify-clean-working-directory
+verify-clean-working-directory:
+	@if ! git diff-index --quiet HEAD --; then \
+		echo "There are uncommitted changes in the working directory"; \
+		exit 1; \
+	fi
+
+
 # Build, e.g. for distribution
 .PHONY: build
-build:
+build: verify-changelog verify-clean-working-directory lint test
 	@$(PIPENV) run $(PYTHON) -m build
 
 
@@ -44,6 +63,8 @@ build:
 .PHONY: publish
 publish: build
 	@$(PIPENV) run twine upload dist/*
+	@git tag v$(shell $(PIPENV) run python setup.py --version)
+	@git push origin --tags
 
 
 # Default target
