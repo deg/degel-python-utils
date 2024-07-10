@@ -33,6 +33,10 @@ test:
 	@PYTHONPATH=$(SRC_DIR) $(PIPENV) run pytest
 
 
+.PHONY outdated:
+outdated:
+	@pipenv update --outdated
+
 # Verify changelog contains the current version
 .PHONY: verify-changelog
 verify-changelog:
