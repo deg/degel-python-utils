@@ -1,7 +1,7 @@
-PACKAGE_NAME=degel-python-utils
-PYTHON=python
-PIPENV=pipenv
-SRC_DIR=src
+PACKAGE_NAME:=degel_python_utils
+PYTHON:=python
+PIPENV:=pipenv
+SRC_DIR:=src
 
 # Setup project on new machine
 .PHONY: install
@@ -56,20 +56,28 @@ verify-all-committed:
 	fi
 
 
-# Build, e.g. for distribution
+# Generate documentation
+.PHONY: document
+document:
+	@$(PIPENV) run pdoc -o docs $(SRC_DIR)/$(PACKAGE_NAME)
+
+
+# Build, e.g., for distribution
 .PHONY: build
 build: verify-changelog verify-all-committed clean lint test
 	@$(PIPENV) run $(PYTHON) -m build
 
 
-# Publish to Pypi
+# Publish to PyPI and update GitHub Pages
 # Note: relies on API key in ~/.pypirc
 .PHONY: publish
-publish: build
+publish: build document
 	@$(PIPENV) run twine upload dist/*
 	@git push origin
-	@git tag v$(shell $(PIPENV) run python setup.py --version)
+	VERSION=$(shell $(PIPENV) run $(PYTHON) setup.py --version)
+	@git tag v${VERSION}
 	@git push origin --tags
+	@$(PIPENV) run ghp-import -n -p -f docs -m "Update documentation for version ${VERSION}"
 
 
 # Default target
