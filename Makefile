@@ -78,10 +78,10 @@ build: verify-changelog verify-all-committed clean lint test
 publish: build document
 	@$(PIPENV) run twine upload dist/*
 	@git push origin
-	VERSION=$(shell $(PIPENV) run $(PYTHON) setup.py --version)
-	@git tag v${VERSION}
+	$(eval VERSION=$(shell $(PIPENV) run $(PYTHON) setup.py --version))
+	@git tag v$(VERSION)
 	@git push origin --tags
-	@$(PIPENV) run ghp-import -n -p -f docs -m "Update documentation for version ${VERSION}"
+	@$(PIPENV) run ghp-import -n -p -f docs -m "Update documentation for version $(VERSION)"
 
 
 # Default target
