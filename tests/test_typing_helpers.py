@@ -7,7 +7,7 @@ def example_comparison_func(a: Any, b: Any) -> bool:
     return a == b
 
 
-def test_comparison_function_type_alias():
+def test_comparison_function_type_alias() -> None:
     example_func: ComparisonFunction = example_comparison_func
     assert isinstance(example_func, Callable)
     assert example_func.__annotations__["a"] == Any

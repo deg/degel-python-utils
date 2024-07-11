@@ -1,5 +1,6 @@
 from datetime import datetime
 import os
+from typing import Self
 
 from .log_tools import setup_logger
 
@@ -12,15 +13,15 @@ class _AppEnv:
     Manages environment variables in a controlled way.
     """
 
-    def __init__(self):
+    def __init__(self: Self) -> None:
         """Initialize state"""
         self.app_name = "Client of Degel Python Utils"
         self.registered_vars = []
 
-    def set_app_name(self, app_name: str) -> None:
+    def set_app_name(self: Self, app_name: str) -> None:
         self.app_name = app_name
 
-    def register_env_var(self, var: str, private: bool = False):
+    def register_env_var(self: Self, var: str, private: bool = False) -> None:
         """
         Register a variable, which we expect to find in the OS environment at runtime.
 
@@ -37,7 +38,7 @@ class _AppEnv:
         else:
             self.registered_vars.append({"name": var, "private": private})
 
-    def show_env(self):
+    def show_env(self: Self) -> None:
         """
         Show the program state and environment variables. Typically called at startup.
         Private variables will have their values obscured.
@@ -53,7 +54,7 @@ class _AppEnv:
             logger.info(f"{var_name}: {var_value}")
         logger.info("================")
 
-    def get_env_var(self, var: str) -> str | None:
+    def get_env_var(self: Self, var: str) -> str | None:
         """
         Get the value of a registered environment variable.
 

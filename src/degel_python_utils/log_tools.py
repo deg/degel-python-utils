@@ -3,11 +3,12 @@
 import contextvars
 import logging
 import time
+from typing import Any, Optional, Self, Union
 
 from blessings import Terminal
 
 
-def setup_logger(name, level=logging.DEBUG):
+def setup_logger(name: str, level: int = logging.DEBUG) -> logging.Logger:
     """
     Set up and return a logger with the specified name.
     """
@@ -19,7 +20,9 @@ def setup_logger(name, level=logging.DEBUG):
     return logger
 
 
-log_prefix = contextvars.ContextVar("log_prefix", default="")
+log_prefix: contextvars.ContextVar[str] = contextvars.ContextVar(
+    "log_prefix", default=""
+)
 
 
 class OurLogger(logging.Logger):
@@ -31,12 +34,12 @@ class OurLogger(logging.Logger):
     logging.addLevelName(MINOR, "MINOR")
     logging.addLevelName(MAJOR, "MAJOR")
 
-    def minor(self, message, *args, **kwargs):
+    def minor(self: Self, message: str, *args: Any, **kwargs: Any) -> None:
         """Helper function for log level MINOR"""
         if self.isEnabledFor(self.MINOR):
             self._log(self.MINOR, message, args, **kwargs)
 
-    def major(self, message, *args, **kwargs):
+    def major(self: Self, message: str, *args: Any, **kwargs: Any) -> None:
         """Helper function for log level MAJOR"""
         if self.isEnabledFor(self.MAJOR):
             self._log(self.MAJOR, message, args, **kwargs)
@@ -48,14 +51,20 @@ logging.setLoggerClass(OurLogger)
 class OurLogFormatter(logging.Formatter):
     """Apply colors to the different logging levels"""
 
-    def __init__(self, fmt=None, datefmt=None, style="%", use_color=True):
+    def __init__(
+        self: Self,
+        fmt: Optional[str] = None,
+        datefmt: Optional[str] = None,
+        style: str = "%",
+        use_color: bool = True,
+    ) -> None:
         if fmt is None:
             fmt = "%(asctime)s - %(levelname)s- %(message)s"
         super().__init__(fmt, datefmt=None, style=style)
         self.use_color = use_color
-        self.t = Terminal() if use_color else None
+        self.t: Optional[Terminal] = Terminal() if use_color else None
 
-    def format(self, record):
+    def format(self: Self, record: logging.LogRecord) -> str:
         ct = self.converter(record.created)
         prefix = log_prefix.get()
         record.msg = f"{prefix}{record.msg}"
@@ -79,7 +88,7 @@ class OurLogFormatter(logging.Formatter):
             return "\n".join(colored_lines)
         return formatted_msg
 
-    def get_color(self, levelno):
+    def get_color(self: Self, levelno: int) -> str:
         """Map log levels to colors"""
         return {
             logging.DEBUG: self.t.red + self.t.bold,
@@ -91,7 +100,7 @@ class OurLogFormatter(logging.Formatter):
             logging.CRITICAL: self.t.red,
         }.get(levelno, self.t.normal)
 
-    def formatException(self, ei):
+    def formatException(self: Self, ei: Union[Exception, tuple]) -> str:
         if self.use_color:
             return self.t.red + super().formatException(ei) + self.t.normal
         return super().formatException(ei)
@@ -100,7 +109,7 @@ class OurLogFormatter(logging.Formatter):
 class OurLogHandler(logging.StreamHandler):
     """Auto-exit the app if it hits a critical error"""
 
-    def emit(self, record):
+    def emit(self: Self, record: logging.LogRecord) -> None:
         if record.levelno >= logging.CRITICAL:
             raise RuntimeError("Exit forced by our logging handler")
         super().emit(record)
