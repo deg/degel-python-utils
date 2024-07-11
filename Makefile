@@ -18,7 +18,11 @@ hooks:
 # Cleanup temp files
 .PHONY: clean
 clean:
-	@rm -rf build dist *.egg-info
+	@rm -rf build docs dist *.egg-info
+	@rm -rf .mypy_cache .pytest_cache .venv Pipfile.lock
+	@find . -type d -name '__pycache__' -exec rm -rf {} +
+	@find . -type f -name '*.pyc' -delete
+	@find . -type f -name '*.pyo' -delete
 
 
 # Lint source

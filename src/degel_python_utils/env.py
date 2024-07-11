@@ -1,6 +1,5 @@
 from datetime import datetime
 import os
-import sys
 
 from .log_tools import setup_logger
 
@@ -8,29 +7,35 @@ logger = setup_logger(__name__)
 # pylint: disable=logging-format-interpolation
 
 
-class AppEnv:
+class _AppEnv:
     """
     Manages environment variables in a controlled way.
     """
 
     def __init__(self):
         """Initialize state"""
+        self.app_name = "Client of Degel Python Utils"
         self.registered_vars = []
 
-    def register_env_var(self, name: str, private: bool = False):
+    def set_app_name(self, app_name: str) -> None:
+        self.app_name = app_name
+
+    def register_env_var(self, var: str, private: bool = False):
         """
         Register a variable, which we expect to find in the OS environment at runtime.
 
         [TODO]
-        - We may want an option to name the variable different from the OS env name.
+        - We may want an option to name the variable different from the OS env var.
 
         Args:
-            name (str): Variable name (both in the OS env and the program variable).
+            var (str): Variable name (both in the OS env and the program variable).
             private (bool, optional): Whether to obscure the value in logs.
         """
-        value = os.environ.get(name)
-        setattr(sys.modules[__name__], name, value)
-        self.registered_vars.append({"name": name, "private": private})
+        value = os.environ.get(var)
+        if value is None:
+            logger.warn(f"Environment variable {var} not found.")
+        else:
+            self.registered_vars.append({"name": var, "private": private})
 
     def show_env(self):
         """
@@ -38,18 +43,17 @@ class AppEnv:
         Private variables will have their values obscured.
         """
         logger.info("================")
-        logger.info(
-            f"{__name__} environment at {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}"
-        )
+        now_str = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+        logger.info(f"{self.app_name} environment at {now_str}")
         for var in self.registered_vars:
             var_name = var["name"]
-            var_value = globals().get(var_name, None)
+            var_value = os.environ.get(var_name)
             if var["private"]:
                 var_value = obscure_private(var_value, 4)
             logger.info(f"{var_name}: {var_value}")
         logger.info("================")
 
-    def get_env_var(self, name: str) -> str | None:
+    def get_env_var(self, var: str) -> str | None:
         """
         Get the value of a registered environment variable.
 
@@ -59,7 +63,9 @@ class AppEnv:
         Returns:
             str | None: The value of the environment variable.
         """
-        return globals().get(name, None)
+        if any(v["name"] == var for v in self.registered_vars):
+            return os.environ.get(var)
+        raise ValueError(f"{var} is not a registered environment variable")
 
 
 def obscure_private(val: str, len_to_show: int) -> str:
@@ -74,3 +80,7 @@ def obscure_private(val: str, len_to_show: int) -> str:
         str: The obscured string.
     """
     return f"{val[:len_to_show]}...{val[-len_to_show:]}" if val else ""
+
+
+# Expose only a singleton environment manager
+appEnv = _AppEnv()
