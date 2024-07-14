@@ -23,19 +23,12 @@ To get started with `degel-python-utils` on a new machine, follow these steps:
    pip install pipenv
    ```
 
-   Then, install the project dependencies:
+   Then, install the project dependencies and pre-commit hooks:
 
    ```bash
    make install
    ```
 
-3. **Install pre-commit hooks:**
-
-   Install the pre-commit hooks to ensure code quality:
-
-   ```bash
-   make hooks
-   ```
 
 ### Using degel-python-utils in other projects
 
@@ -72,18 +65,10 @@ modifications, follow these steps:
    cd degel-python-utils
    ```
 
-2. **Install dependencies:**
+2. **Install dependencies and pre-commit hooks:**
 
    ```bash
    make install
-   ```
-
-3. **Install pre-commit hooks:**
-
-   Install the pre-commit hooks to ensure code quality:
-
-   ```bash
-   make hooks
    ```
 
 4. **Run tests:**
