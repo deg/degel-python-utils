@@ -79,5 +79,6 @@ Pipfile.lock
 # egg info
 *.egg-info/
 
-# dist
+# distribution
 dist/
+docs/
