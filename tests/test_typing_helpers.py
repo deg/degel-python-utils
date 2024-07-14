@@ -1,6 +1,6 @@
 from typing import Any, Callable
 
-from degel_python_utils.typing_helpers import ComparisonFunction
+from degel_python_utils import ComparisonFunction
 
 
 def example_comparison_func(a: Any, b: Any) -> bool:
