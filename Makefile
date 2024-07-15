@@ -88,6 +88,7 @@ document:
 
 # Build, e.g., for distribution
 build: verify-changelog verify-all-committed lint test
+	@rm -rf dist
 	@$(PIPENV) run $(PYTHON) -m build
 .PHONY: build
 
