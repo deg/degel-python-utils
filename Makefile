@@ -25,19 +25,14 @@ help:
 .PHONY: help
 
 
-# Install git hooks on new machine
-hooks:
-	@pre-commit install
-.PHONY: hooks
-
-
-# Setup project on new machine
-install: hooks
+# Setup pipenv environment and git hooks
+install:
 	@$(PIPENV) install --dev
+	@pre-commit install
 .PHONY: install
 
 
-# Cleanup temp files
+# Clean up
 clean:
 	@rm -rf build docs dist *.egg-info
 	@rm -rf .mypy_cache .pytest_cache .venv Pipfile.lock
@@ -47,13 +42,13 @@ clean:
 .PHONY: clean
 
 
-# Lint source
+# Lint the code
 lint:
-	@$(PIPENV) run flake8 src tests
+	@$(PIPENV) run flake8 $(SRC_DIR) tests
 .PHONY: lint
 
 
-# Run all tests
+# Run tests
 test:
 	@PYTHONPATH=$(SRC_DIR) $(PIPENV) run pytest
 .PHONY: test
@@ -64,6 +59,7 @@ outdated:
 	@pipenv install --dev
 	@pipenv update --outdated
 .PHONY outdated:
+
 
 # Verify changelog contains the current version
 verify-changelog:
