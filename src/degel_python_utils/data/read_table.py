@@ -1,4 +1,4 @@
-"""Support for reading and writng tabular data"""
+"""Support for reading tabular data"""
 
 import csv
 from io import BytesIO, StringIO
