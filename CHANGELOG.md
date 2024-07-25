@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.1.6] - 2024-07-25
+- Fix missing publication manifest
+
 ## [v0.1.5] - 2024-07-25
 - Improved USPTO API interface
 

@@ -90,6 +90,7 @@ document:
 build: verify-changelog verify-all-committed lint test
 	@rm -rf dist
 	@$(PIPENV) run $(PYTHON) -m build
+	@$(PIPENV) run twine check dist/*
 .PHONY: build
 
 
