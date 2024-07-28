@@ -3,14 +3,18 @@
 ## [v0.1.8] - 2024-07-28
 - Try again (add wheel and missing __init__.py files)
 
+
 ## [v0.1.7] - 2024-07-25
 - More attempts to fix publication
+
 
 ## [v0.1.6] - 2024-07-25
 - Fix missing publication manifest
 
+
 ## [v0.1.5] - 2024-07-25
 - Improved USPTO API interface
+
 
 ## [v0.1.4] - 2024-07-15
 - More library tooling
@@ -25,12 +29,12 @@
 - Fixes to tooling
 
 
-	## [v0.1.2] - 2024-07-10
+## [v0.1.2] - 2024-07-10
 - Add env-var management
 - Auto-generate docs
 
 
-	## [v0.1.1] - 2024-07-09
+## [v0.1.1] - 2024-07-09
 - Add a couple of utils, mostly to test worflows
 
 
