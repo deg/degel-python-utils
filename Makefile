@@ -46,7 +46,7 @@ clean:
 # Lint the code
 lint:
 	@$(PIPENV) run pylint $(SRC_DIR) $(TESTS_DIR)
-	@$(PIPENV) run flake8 $(SRC_DIR) $(TESTS_DIR)
+	pre-commit run --all-files
 .PHONY: lint
 
 
