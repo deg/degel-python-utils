@@ -11,7 +11,6 @@ openpyxl = "3.1.5"
 requests = "2.32.3"
 uvicorn = "==0.30.3"
 
-
 [dev-packages]
 black = "==24.4.2"
 build = "==1.2.1"
@@ -28,6 +27,7 @@ pytest = "==8.3.1"
 pytest-mock = "3.14.0"
 setuptools = "==71.1.0"
 twine = "==5.1.1"
+wheel = "==0.43.0"
 
 [requires]
 python_version = "3.12"
