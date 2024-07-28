@@ -1,5 +1,11 @@
 # Changelog
 
+## [v0.1.8] - 2024-07-28
+- Try again (add wheel and missing __init__.py files)
+
+## [v0.1.7] - 2024-07-25
+- More attempts to fix publication
+
 ## [v0.1.6] - 2024-07-25
 - Fix missing publication manifest
 
