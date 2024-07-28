@@ -1,4 +1,4 @@
-"""Support for reading tabular data"""
+"""Support for reading tabular data."""
 
 import csv
 from io import BytesIO, StringIO
@@ -16,7 +16,7 @@ logger = setup_logger(__name__)
 
 def read_data_table(file: str | UploadFile) -> list[dict[str, str]]:
     """
-    Reads a file (CSV or XLSX) and returns a list of per-row dicts.
+    Read a file (CSV or XLSX) and returns a list of per-row dicts.
 
     Args:
         file (str | UploadFile): The file path or UploadFile object.
@@ -46,7 +46,7 @@ def read_data_table(file: str | UploadFile) -> list[dict[str, str]]:
 
 def read_xlsx_data_table(file: str | BytesIO) -> list[dict[str, str]]:
     """
-    Reads an XLSX file and returns a list of per-row dicts.
+    Read an XLSX file and returns a list of per-row dicts.
 
     Args:
         file (str | BytesIO): The file path or file-like object.
@@ -75,7 +75,7 @@ def read_xlsx_data_table(file: str | BytesIO) -> list[dict[str, str]]:
 
 def read_csv_data_table(file: str | StringIO | BytesIO) -> list[dict[str, str]]:
     """
-    Reads a CSV file and returns a list of per-row dicts.
+    Read a CSV file and returns a list of per-row dicts.
 
     Args:
         file (str | StringIO | BytesIO): The file path or file-like object.
@@ -101,9 +101,7 @@ def read_csv_data_table(file: str | StringIO | BytesIO) -> list[dict[str, str]]:
 
 
 def transform_headers(headers: Sequence[str] | None) -> list[str]:
-    """
-    Transforms the headers of the input file to a consistent format.
-    """
+    """Transform the headers of the input file to a consistent format."""
     if headers is None:
         return []
     return [

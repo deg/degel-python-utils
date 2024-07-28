@@ -1,6 +1,4 @@
-"""
-USPTO patent API
-"""
+"""USPTO patent API."""
 
 import asyncio
 
@@ -17,7 +15,7 @@ async def fetch_us_patent_application_from_uspto_api(
     application_number: str, kind_code: str = "A1"
 ) -> dict[str, str]:
     """
-    Fetches a US patent application from the USPTO API.
+    Fetch a US patent application from the USPTO API.
 
     :param application_number: The patent number to fetch.
     :param kind_code: The kind code of the patent, default is "A1".
@@ -30,7 +28,7 @@ async def fetch_us_patent_application_from_uspto_api(
 
 async def fetch_us_patent_grant_from_uspto_api(patent_number: str) -> dict[str, str]:
     """
-    Fetches a granted US patent from the USPTO API.
+    Fetch a granted US patent from the USPTO API.
 
     :param patent_number: The patent number to fetch.
     :return: A dictionary containing the patent grant details.
@@ -44,7 +42,7 @@ async def fetch_from_uspto_api(
     endpoint: str, params: dict, num_retries: int = 5
 ) -> dict[str, str]:
     """
-    Helper function to fetch data from the USPTO API with retry logic.
+    Fetch data from the USPTO API with retry logic (helper function).
 
     :param endpoint: The API endpoint to call.
     :param params: The parameters to pass to the API call.

@@ -16,17 +16,15 @@ logger = setup_logger(__name__)
 
 
 class _AppEnv:
-    """
-    Manages environment variables in a controlled way.
-    """
+    """Manages environment variables in a controlled way."""
 
     def __init__(self: Self) -> None:
-        """Initialize state"""
+        """Initialize state."""
         self.app_name = "Client of Degel Python Utils"
         self.registered_vars: list[dict[str, str | bool]] = []
 
     def set_app_name(self: Self, app_name: str) -> None:
-        """Register the application name. (For now, used just for logging)"""
+        """Register the application name. (For now, used just for logging)."""
         self.app_name = app_name
 
     def register_env_var(self: Self, var: str, private: bool = False) -> None:
@@ -48,7 +46,10 @@ class _AppEnv:
 
     def show_env(self: Self) -> None:
         """
-        Show the program state and environment variables. Typically called at startup.
+        Show the program state and environment variables.
+
+        Typically called at startup.
+
         Private variables will have their values obscured.
         """
         logger.info("================")

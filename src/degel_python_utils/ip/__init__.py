@@ -1,6 +1,4 @@
-"""
-Utilities for parsing and reading patent applications and grants.
-"""
+"""Utilities for parsing and reading patent applications and grants."""
 
 import re
 

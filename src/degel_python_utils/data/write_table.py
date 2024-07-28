@@ -1,4 +1,4 @@
-"""Support for writing tabular data"""
+"""Support for writing tabular data."""
 
 import csv
 from io import BytesIO
@@ -20,9 +20,7 @@ def write_data_table(
     file_path: str | None,
     column_widths: dict[str, int] | None = None,
 ) -> None:
-    """
-    Writes a list of dictionaries to a file (CSV or XLSX) based on the file extension.
-    """
+    """Write dictionaries to a file (CSV or XLSX, based on the file extension)."""
     if file_path is None:
         # Default to .xlsx if file_path is None
         write_dicts_to_xlsx(data, "default.xlsx", column_widths=column_widths)
@@ -39,9 +37,7 @@ def write_data_table(
 
 
 def write_dicts_to_csv(data: list[dict[str, str]], file_path: str) -> None:
-    """
-    Writes a list of dictionaries to a CSV file.
-    """
+    """Write a list of dictionaries to a CSV file."""
     if not file_path:
         raise UnsupportedError("Write of CSV data to memory buffer")
     with open(file_path, mode="w", encoding="utf-8", newline="") as file:
@@ -59,9 +55,7 @@ def write_dicts_to_xlsx(
     file_path: str | None = None,
     column_widths: dict[str, int] | None = None,
 ) -> BytesIO | None:
-    """
-    Writes a list of dictionaries to an XLSX file.
-    """
+    """Write a list of dictionaries to an XLSX file."""
     workbook = Workbook()
     sheet = workbook.active
     if data:

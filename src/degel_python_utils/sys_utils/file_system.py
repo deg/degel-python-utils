@@ -1,13 +1,11 @@
-"""
-File system helpers
-"""
+"""File system helpers."""
 
 import os
 
 
 def append_to_filename(filename: str, suffix: str) -> str:
     """
-    Appends a suffix to the filename before the file extension.
+    Append a suffix to the filename before the file extension.
 
     :param filename: The original filename.
     :param suffix: The suffix to append.

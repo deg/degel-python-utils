@@ -11,30 +11,27 @@ from typing import Self
 
 
 class DegelUtilsError(Exception):
-    """
-    Base exception class for all degel_python_utils errors.
-    """
+    """Base exception class for all degel_python_utils errors."""
 
     def __init__(self: Self, message: str = "An error occurred in degel_utils") -> None:
+        """Init."""
         super().__init__(message)
 
 
 class ExternalApiError(DegelUtilsError):
-    """
-    Exception raised by calls to external APIs.
-    """
+    """Exception raised by calls to external APIs."""
 
     def __init__(
         self: Self, message: str = "An API error occurred in degel_utils"
     ) -> None:
+        """Init."""
         super().__init__(message)
 
 
 class UnsupportedError(DegelUtilsError):
-    """
-    Exception indicating feature not yet supported by Degel Utils.
-    """
+    """Exception indicating feature not yet supported by Degel Utils."""
 
     def __init__(self: Self, feature: str) -> None:
+        """Init."""
         message = f"The Degel Utils Library does not yet support '{feature}'"
         super().__init__(message)

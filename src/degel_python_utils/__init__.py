@@ -1,5 +1,4 @@
-"""Degel Python Utilities is a collection of useful Python helper functions that I've
-used in various projects.
+"""Degel Python Utilities is a collection of my useful Python helper functions.
 
 For now, it is still scattershot, but I expect it to grow and self-organize as I merge
 in more projects.

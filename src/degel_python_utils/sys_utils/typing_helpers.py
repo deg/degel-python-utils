@@ -1,4 +1,4 @@
-"""Python type shortcuts and helpers"""
+"""Python type shortcuts and helpers."""
 
 from typing import Any, Callable, TypeAlias
 
