@@ -2,6 +2,7 @@ PACKAGE_NAME:=degel_python_utils
 PYTHON:=python
 PIPENV:=pipenv
 SRC_DIR:=src
+TESTS_DIR:=tests
 
 .DEFAULT_GOAL := help
 
@@ -44,7 +45,8 @@ clean:
 
 # Lint the code
 lint:
-	@$(PIPENV) run flake8 $(SRC_DIR) tests
+	@$(PIPENV) run pylint $(SRC_DIR) $(TESTS_DIR)
+	@$(PIPENV) run flake8 $(SRC_DIR) $(TESTS_DIR)
 .PHONY: lint
 
 

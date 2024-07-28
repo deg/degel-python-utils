@@ -10,6 +10,7 @@ from openpyxl import load_workbook
 from ..sys_utils.log_tools import setup_logger
 
 logger = setup_logger(__name__)
+# pylint: disable=logging-fstring-interpolation
 
 
 def read_data_table(file: str | UploadFile) -> list[dict[str, str]]:
@@ -80,12 +81,12 @@ def read_csv_data_table(file: str | StringIO | BytesIO) -> list[dict[str, str]]:
         with open(file, mode="r", encoding="utf-8") as f:
             reader = csv.DictReader(f)
             reader.fieldnames = transform_headers(reader.fieldnames)
-            return [row for row in reader]
+            return list(reader)
     else:
         content = file.read().decode("utf-8").splitlines()
         reader = csv.DictReader(content)
         reader.fieldnames = transform_headers(reader.fieldnames)
-        return [row for row in reader]
+        return list(reader)
 
 
 def transform_headers(headers: list[str]) -> list[str]:

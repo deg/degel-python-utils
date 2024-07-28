@@ -1,11 +1,18 @@
-from datetime import datetime
+"""
+Tools to manage environment variables in a controlled way.
+
+We can't prevent you from calling the global environment directly, but you can use these
+accessors for error-checked access, e.g., to catch typos.
+"""
+
 import os
+from datetime import datetime
 from typing import Self
 
 from .log_tools import setup_logger
 
 logger = setup_logger(__name__)
-# pylint: disable=logging-format-interpolation
+# pylint: disable=logging-fstring-interpolation
 
 
 class _AppEnv:
@@ -19,6 +26,7 @@ class _AppEnv:
         self.registered_vars = []
 
     def set_app_name(self: Self, app_name: str) -> None:
+        """Register the application name. (For now, used just for logging)"""
         self.app_name = app_name
 
     def register_env_var(self: Self, var: str, private: bool = False) -> None:
@@ -34,7 +42,7 @@ class _AppEnv:
         """
         value = os.environ.get(var)
         if value is None:
-            logger.warn(f"Environment variable {var} not found.")
+            logger.warning(f"Environment variable {var} not found.")
         else:
             self.registered_vars.append({"name": var, "private": private})
 

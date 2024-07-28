@@ -1,3 +1,11 @@
+"""Degel Python Utilities is a collection of useful Python helper functions that I've
+used in various projects.
+
+For now, it is still scattershot, but I expect it to grow and self-organize as I merge
+in more projects.
+
+"""
+
 from .data.read_table import read_data_table
 from .data.write_table import write_data_table
 from .ip import parse_extended_patent_number

@@ -3,12 +3,14 @@ USPTO patent API
 """
 
 import asyncio
+
 import httpx
 
-from ..sys_utils.errors import ExternalApiError
-from ..sys_utils.log_tools import setup_logger
+from degel_python_utils.sys_utils.errors import ExternalApiError
+from degel_python_utils.sys_utils.log_tools import setup_logger
 
 logger = setup_logger(__name__)
+# pylint: disable=logging-fstring-interpolation
 
 
 async def fetch_us_patent_application_from_uspto_api(

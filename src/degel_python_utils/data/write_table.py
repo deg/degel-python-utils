@@ -16,7 +16,7 @@ logger = setup_logger(__name__)
 
 
 def write_data_table(
-    data: list[dict[str, str]], file_path: str | None, column_widths: list[int] = []
+    data: list[dict[str, str]], file_path: str | None, column_widths: list[int] = None
 ) -> None:
     """
     Writes a list of dictionaries to a file (CSV or XLSX) based on the file extension.
@@ -24,10 +24,10 @@ def write_data_table(
     _, file_extension = os.path.splitext(file_path) if file_path else (None, ".xlsx")
     if file_extension.lower() == ".csv":
         write_dicts_to_csv(data, file_path)
-    elif file_extension.lower() == ".xlsx":
+        return None
+    if file_extension.lower() == ".xlsx":
         return write_dicts_to_xlsx(data, file_path, column_widths=column_widths)
-    else:
-        raise ValueError("Unsupported file type")
+    raise ValueError("Unsupported file type")
 
 
 def write_dicts_to_csv(data: list[dict[str, str]], file_path: str) -> None:
@@ -47,7 +47,7 @@ def write_dicts_to_csv(data: list[dict[str, str]], file_path: str) -> None:
 
 
 def write_dicts_to_xlsx(
-    data: list[dict[str, str]], file_path: str = None, column_widths: list[int] = []
+    data: list[dict[str, str]], file_path: str = None, column_widths: list[int] = None
 ) -> BytesIO | None:
     """
     Writes a list of dictionaries to an XLSX file.
@@ -69,17 +69,18 @@ def write_dicts_to_xlsx(
 
         for i, header in enumerate(headers, start=1):
             column_letter = get_column_letter(i)
-            if header in column_widths:
+            if column_widths and header in column_widths:
                 sheet.column_dimensions[column_letter].width = column_widths[header]
 
         for row in data:
             sheet.append(list(row.values()))
     else:
         print("No data to write.")
+
     if file_path:
         workbook.save(file_path)
-    else:
-        excel_file = BytesIO()
-        workbook.save(excel_file)
-        excel_file.seek(0)
-        return excel_file
+        return None
+    excel_file = BytesIO()
+    workbook.save(excel_file)
+    excel_file.seek(0)
+    return excel_file
