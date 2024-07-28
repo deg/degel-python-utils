@@ -3,7 +3,7 @@
 import contextvars
 import logging
 import time
-from typing import Any, Optional, Self, Union
+from typing import Any, Literal, Self, Union, cast
 
 from blessings import Terminal
 
@@ -53,16 +53,14 @@ class OurLogFormatter(logging.Formatter):
 
     def __init__(
         self: Self,
-        fmt: Optional[str] = None,
-        datefmt: Optional[str] = None,
-        style: str = "%",
+        fmt: str = "%(asctime)s - %(levelname)s - %(message)s",
+        datefmt: str | None = None,
+        style: Literal["%", "{", "$"] = "%",
         use_color: bool = True,
     ) -> None:
-        if fmt is None:
-            fmt = "%(asctime)s - %(levelname)s- %(message)s"
-        super().__init__(fmt, datefmt=None, style=style)
+        super().__init__(fmt, datefmt, style)
         self.use_color = use_color
-        self.t: Optional[Terminal] = Terminal() if use_color else None
+        self.t = Terminal() if use_color else None
 
     def format(self: Self, record: logging.LogRecord) -> str:
         ct = self.converter(record.created)
@@ -71,7 +69,7 @@ class OurLogFormatter(logging.Formatter):
         record.asctime = (
             f"{time.strftime('%Y-%m-%d %H:%M:%S', ct)},{int(record.msecs):03}"
         )
-        if self.use_color:
+        if self.use_color and self.t is not None:
             color = self.get_color(record.levelno)
             level = f"{record.levelname+':':<10}"
             record.levelname = f"{color}{level}{self.t.normal}"
@@ -82,14 +80,18 @@ class OurLogFormatter(logging.Formatter):
             lines = formatted_msg.split("\n")
             space_prefix_length = len(record.asctime) + len(level) + 5
             space_prefix = " " * space_prefix_length
-            colored_lines = [lines[0]] + [
-                f"{color}{space_prefix}{line}{self.t.normal}" for line in lines[1:]
-            ]
-            return "\n".join(colored_lines)
+            if self.use_color and self.t is not None:
+                colored_lines = [lines[0]] + [
+                    f"{color}{space_prefix}{line}{self.t.normal}" for line in lines[1:]
+                ]
+                return "\n".join(colored_lines)
+            return formatted_msg
         return formatted_msg
 
     def get_color(self: Self, levelno: int) -> str:
         """Map log levels to colors"""
+        if not self.t:
+            return ""
         return {
             logging.DEBUG: self.t.red + self.t.bold,
             OurLogger.MINOR: self.t.yellow,
@@ -101,9 +103,9 @@ class OurLogFormatter(logging.Formatter):
         }.get(levelno, self.t.normal)
 
     def formatException(self: Self, ei: Union[Exception, tuple]) -> str:
-        if self.use_color:
-            return self.t.red + super().formatException(ei) + self.t.normal
-        return super().formatException(ei)
+        if self.use_color and self.t is not None:
+            return self.t.red + super().formatException(cast(tuple, ei)) + self.t.normal
+        return super().formatException(cast(tuple, ei))
 
 
 class OurLogHandler(logging.StreamHandler):

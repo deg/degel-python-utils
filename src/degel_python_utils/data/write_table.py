@@ -16,18 +16,26 @@ logger = setup_logger(__name__)
 
 
 def write_data_table(
-    data: list[dict[str, str]], file_path: str | None, column_widths: list[int] = None
+    data: list[dict[str, str]],
+    file_path: str | None,
+    column_widths: dict[str, int] | None = None,
 ) -> None:
     """
     Writes a list of dictionaries to a file (CSV or XLSX) based on the file extension.
     """
-    _, file_extension = os.path.splitext(file_path) if file_path else (None, ".xlsx")
+    if file_path is None:
+        # Default to .xlsx if file_path is None
+        write_dicts_to_xlsx(data, "default.xlsx", column_widths=column_widths)
+        return
+
+    _, file_extension = os.path.splitext(file_path)
+
     if file_extension.lower() == ".csv":
         write_dicts_to_csv(data, file_path)
-        return None
-    if file_extension.lower() == ".xlsx":
-        return write_dicts_to_xlsx(data, file_path, column_widths=column_widths)
-    raise ValueError("Unsupported file type")
+    elif file_extension.lower() == ".xlsx":
+        write_dicts_to_xlsx(data, file_path, column_widths=column_widths)
+    else:
+        raise ValueError("Unsupported file type")
 
 
 def write_dicts_to_csv(data: list[dict[str, str]], file_path: str) -> None:
@@ -47,7 +55,9 @@ def write_dicts_to_csv(data: list[dict[str, str]], file_path: str) -> None:
 
 
 def write_dicts_to_xlsx(
-    data: list[dict[str, str]], file_path: str = None, column_widths: list[int] = None
+    data: list[dict[str, str]],
+    file_path: str | None = None,
+    column_widths: dict[str, int] | None = None,
 ) -> BytesIO | None:
     """
     Writes a list of dictionaries to an XLSX file.

@@ -23,7 +23,7 @@ class _AppEnv:
     def __init__(self: Self) -> None:
         """Initialize state"""
         self.app_name = "Client of Degel Python Utils"
-        self.registered_vars = []
+        self.registered_vars: list[dict[str, str | bool]] = []
 
     def set_app_name(self: Self, app_name: str) -> None:
         """Register the application name. (For now, used just for logging)"""
@@ -56,8 +56,8 @@ class _AppEnv:
         logger.info(f"{self.app_name} environment at {now_str}")
         for var in self.registered_vars:
             var_name = var["name"]
-            var_value = os.environ.get(var_name)
-            if var["private"]:
+            var_value = os.environ.get(str(var_name))
+            if var_value and var["private"]:
                 var_value = obscure_private(var_value, 4)
             logger.info(f"{var_name}: {var_value}")
         logger.info("================")

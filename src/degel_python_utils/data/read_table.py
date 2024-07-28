@@ -3,6 +3,7 @@
 import csv
 from io import BytesIO, StringIO
 import os
+from typing import Any, Sequence
 
 from fastapi import UploadFile
 from openpyxl import load_workbook
@@ -23,18 +24,23 @@ def read_data_table(file: str | UploadFile) -> list[dict[str, str]]:
     Returns:
         list[dict[str, str]]: List of dictionaries where each dict represents a row.
     """
-    if hasattr(file, "filename"):
+    file_extension: str
+    file_stream: Any
+
+    if isinstance(file, str):
+        file_extension = os.path.splitext(file)[1]
+        file_stream = file  # [TODO] Kludge!
+    elif hasattr(file, "filename"):
         file_extension = os.path.splitext(file.filename)[1]
-    elif isinstance(file, str):
-        _, file_extension = os.path.splitext(file)
+        file_stream = file.file
     else:
         logger.error(f"Can't handle file object {file}")
         raise ValueError("Unsupported file object")
 
     if file_extension.lower() == ".xlsx":
-        return read_xlsx_data_table(file.file)
+        return read_xlsx_data_table(file_stream)
     if file_extension.lower() == ".csv":
-        return read_csv_data_table(file.file)
+        return read_csv_data_table(file_stream)
     raise ValueError("Unsupported file type")
 
 
@@ -83,16 +89,23 @@ def read_csv_data_table(file: str | StringIO | BytesIO) -> list[dict[str, str]]:
             reader.fieldnames = transform_headers(reader.fieldnames)
             return list(reader)
     else:
-        content = file.read().decode("utf-8").splitlines()
+        if isinstance(file, BytesIO):
+            content = file.read().decode("utf-8").splitlines()
+        elif isinstance(file, StringIO):
+            content = file.read().splitlines()
+        else:
+            raise ValueError("Unsupported file-like object")
         reader = csv.DictReader(content)
         reader.fieldnames = transform_headers(reader.fieldnames)
         return list(reader)
 
 
-def transform_headers(headers: list[str]) -> list[str]:
+def transform_headers(headers: Sequence[str] | None) -> list[str]:
     """
     Transforms the headers of the input file to a consistent format.
     """
+    if headers is None:
+        return []
     return [
         {
             "Case Code": "case_code",

@@ -27,10 +27,10 @@ repos:
   #   hooks:
   #     - id: isort
   #       name: isort (python)
-  # - repo: https://github.com/pre-commit/mirrors-mypy
-  #   rev: v1.11.0
-  #   hooks:
-  #     - id: mypy
+  - repo: https://github.com/pre-commit/mirrors-mypy
+    rev: v1.11.0
+    hooks:
+      - id: mypy
   # - repo: https://github.com/PyCQA/pydocstyle
   #   rev: 6.3.0
   #   hooks:
