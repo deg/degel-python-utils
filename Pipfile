@@ -8,6 +8,7 @@ verify_ssl = true
 blessings = "==1.7"
 fastapi = "==0.111.1"
 openpyxl = "3.1.5"
+patent-client = "5.0.16"
 requests = "2.32.3"
 uvicorn = "==0.30.3"
 

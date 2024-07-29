@@ -1,4 +1,9 @@
-"""Utilities for parsing and reading patent applications and grants."""
+"""
+Utilities for parsing and reading patent applications and grants.
+
+Includes support for the USPTO and patent-client API, each of which has strengths
+and weaknesses.
+"""
 
 import re
 

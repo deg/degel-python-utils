@@ -1,4 +1,16 @@
-"""USPTO patent API."""
+"""
+USPTO patent API.
+
+This uses the USPTO bulk API to read US patent applications and grants.
+
+Limitations relative to other APIs.
+
+- US-only
+- Missing old data and even some newer data.  Seems to be unreliable for dates earlier
+  than about 2014.
+- Undocumented and surprising rate limits and network errors
+
+"""
 
 import asyncio
 
