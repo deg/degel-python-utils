@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.9] - 2024-07-29
+- Add patent fcns: parse_extended_patent_number, fetch_us_patent_grant_from_pclient
+- Add many more pre-commit checks
+
 ## [v0.1.8] - 2024-07-28
 - Try again (add wheel and missing __init__.py files)
 
