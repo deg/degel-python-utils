@@ -60,6 +60,12 @@
                     <a class="function" href="#fetch_us_patent_grant_from_uspto_api">fetch_us_patent_grant_from_uspto_api</a>
             </li>
             <li>
+                    <a class="function" href="#google_search">google_search</a>
+            </li>
+            <li>
+                    <a class="function" href="#lookup_patent">lookup_patent</a>
+            </li>
+            <li>
                     <a class="function" href="#parse_extended_patent_number">parse_extended_patent_number</a>
             </li>
             <li>
@@ -117,32 +123,35 @@ in more projects.</p>
 </span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span> <span class="nn">.data.write_table</span> <span class="kn">import</span> <span class="n">write_data_table</span>
 </span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span> <span class="nn">.ip</span> <span class="kn">import</span> <span class="n">parse_extended_patent_number</span>
 </span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="kn">from</span> <span class="nn">.ip.pclient</span> <span class="kn">import</span> <span class="n">fetch_us_patent_grant_from_pclient</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="kn">from</span> <span class="nn">.ip.uspto</span> <span class="kn">import</span> <span class="p">(</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a>    <span class="n">fetch_us_patent_application_from_uspto_api</span><span class="p">,</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="n">fetch_us_patent_grant_from_uspto_api</span><span class="p">,</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a><span class="p">)</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="kn">from</span> <span class="nn">.sys_utils.env</span> <span class="kn">import</span> <span class="n">appEnv</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="kn">from</span> <span class="nn">.sys_utils.errors</span> <span class="kn">import</span> <span class="n">DegelUtilsError</span><span class="p">,</span> <span class="n">ExternalApiError</span><span class="p">,</span> <span class="n">UnsupportedError</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="kn">from</span> <span class="nn">.sys_utils.file_system</span> <span class="kn">import</span> <span class="n">append_to_filename</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="kn">from</span> <span class="nn">.sys_utils.log_tools</span> <span class="kn">import</span> <span class="n">setup_logger</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="kn">from</span> <span class="nn">.sys_utils.typing_helpers</span> <span class="kn">import</span> <span class="n">ComparisonFunction</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="kn">from</span> <span class="nn">.ip.serpapi</span> <span class="kn">import</span> <span class="n">google_search</span><span class="p">,</span> <span class="n">lookup_patent</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="kn">from</span> <span class="nn">.ip.uspto</span> <span class="kn">import</span> <span class="p">(</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="n">fetch_us_patent_application_from_uspto_api</span><span class="p">,</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>    <span class="n">fetch_us_patent_grant_from_uspto_api</span><span class="p">,</span>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="p">)</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="kn">from</span> <span class="nn">.sys_utils.env</span> <span class="kn">import</span> <span class="n">appEnv</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="kn">from</span> <span class="nn">.sys_utils.errors</span> <span class="kn">import</span> <span class="n">DegelUtilsError</span><span class="p">,</span> <span class="n">ExternalApiError</span><span class="p">,</span> <span class="n">UnsupportedError</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="kn">from</span> <span class="nn">.sys_utils.file_system</span> <span class="kn">import</span> <span class="n">append_to_filename</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="kn">from</span> <span class="nn">.sys_utils.log_tools</span> <span class="kn">import</span> <span class="n">setup_logger</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="kn">from</span> <span class="nn">.sys_utils.typing_helpers</span> <span class="kn">import</span> <span class="n">ComparisonFunction</span>
 </span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>    <span class="s2">&quot;append_to_filename&quot;</span><span class="p">,</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>    <span class="s2">&quot;appEnv&quot;</span><span class="p">,</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="s2">&quot;ComparisonFunction&quot;</span><span class="p">,</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>    <span class="s2">&quot;DegelUtilsError&quot;</span><span class="p">,</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="s2">&quot;ExternalApiError&quot;</span><span class="p">,</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="s2">&quot;fetch_us_patent_application_from_uspto_api&quot;</span><span class="p">,</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="s2">&quot;fetch_us_patent_grant_from_pclient&quot;</span><span class="p">,</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="s2">&quot;fetch_us_patent_grant_from_uspto_api&quot;</span><span class="p">,</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>    <span class="s2">&quot;parse_extended_patent_number&quot;</span><span class="p">,</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>    <span class="s2">&quot;read_data_table&quot;</span><span class="p">,</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>    <span class="s2">&quot;setup_logger&quot;</span><span class="p">,</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>    <span class="s2">&quot;UnsupportedError&quot;</span><span class="p">,</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>    <span class="s2">&quot;write_data_table&quot;</span><span class="p">,</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a><span class="p">]</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>    <span class="s2">&quot;append_to_filename&quot;</span><span class="p">,</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="s2">&quot;appEnv&quot;</span><span class="p">,</span>
+</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>    <span class="s2">&quot;ComparisonFunction&quot;</span><span class="p">,</span>
+</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="s2">&quot;DegelUtilsError&quot;</span><span class="p">,</span>
+</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="s2">&quot;ExternalApiError&quot;</span><span class="p">,</span>
+</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="s2">&quot;fetch_us_patent_application_from_uspto_api&quot;</span><span class="p">,</span>
+</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="s2">&quot;fetch_us_patent_grant_from_pclient&quot;</span><span class="p">,</span>
+</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>    <span class="s2">&quot;fetch_us_patent_grant_from_uspto_api&quot;</span><span class="p">,</span>
+</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>    <span class="s2">&quot;google_search&quot;</span><span class="p">,</span>
+</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>    <span class="s2">&quot;lookup_patent&quot;</span><span class="p">,</span>
+</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>    <span class="s2">&quot;parse_extended_patent_number&quot;</span><span class="p">,</span>
+</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>    <span class="s2">&quot;read_data_table&quot;</span><span class="p">,</span>
+</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>    <span class="s2">&quot;setup_logger&quot;</span><span class="p">,</span>
+</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>    <span class="s2">&quot;UnsupportedError&quot;</span><span class="p">,</span>
+</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>    <span class="s2">&quot;write_data_table&quot;</span><span class="p">,</span>
+</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="p">]</span>
 </span></pre></div>
 
 
@@ -505,6 +514,82 @@ in more projects.</p>
 
 
                 </section>
+                <section id="google_search">
+                            <input id="google_search-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">google_search</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">q</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="google_search-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#google_search"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="google_search-20"><a href="#google_search-20"><span class="linenos">20</span></a><span class="k">def</span> <span class="nf">google_search</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="google_search-21"><a href="#google_search-21"><span class="linenos">21</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a Google search and return the result as a dictionary.</span>
+</span><span id="google_search-22"><a href="#google_search-22"><span class="linenos">22</span></a>
+</span><span id="google_search-23"><a href="#google_search-23"><span class="linenos">23</span></a><span class="sd">    Args:</span>
+</span><span id="google_search-24"><a href="#google_search-24"><span class="linenos">24</span></a><span class="sd">        q: The query string to search for.</span>
+</span><span id="google_search-25"><a href="#google_search-25"><span class="linenos">25</span></a><span class="sd">        api_key: The API key for authenticating with SerpApi.</span>
+</span><span id="google_search-26"><a href="#google_search-26"><span class="linenos">26</span></a>
+</span><span id="google_search-27"><a href="#google_search-27"><span class="linenos">27</span></a><span class="sd">    Returns:</span>
+</span><span id="google_search-28"><a href="#google_search-28"><span class="linenos">28</span></a><span class="sd">        A dictionary containing the search results.</span>
+</span><span id="google_search-29"><a href="#google_search-29"><span class="linenos">29</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="google_search-30"><a href="#google_search-30"><span class="linenos">30</span></a>    <span class="n">search</span> <span class="o">=</span> <span class="n">GoogleSearch</span><span class="p">({</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">,</span> <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">})</span>
+</span><span id="google_search-31"><a href="#google_search-31"><span class="linenos">31</span></a>    <span class="k">return</span> <span class="n">search</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Perform a Google search and return the result as a dictionary.</p>
+
+<p>Args:
+    q: The query string to search for.
+    api_key: The API key for authenticating with SerpApi.</p>
+
+<p>Returns:
+    A dictionary containing the search results.</p>
+</div>
+
+
+                </section>
+                <section id="lookup_patent">
+                            <input id="lookup_patent-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
+<div class="attr function">
+            
+        <span class="def">def</span>
+        <span class="name">lookup_patent</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">q</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
+
+                <label class="view-source-button" for="lookup_patent-view-source"><span>View Source</span></label>
+
+    </div>
+    <a class="headerlink" href="#lookup_patent"></a>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="lookup_patent-34"><a href="#lookup_patent-34"><span class="linenos">34</span></a><span class="k">def</span> <span class="nf">lookup_patent</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
+</span><span id="lookup_patent-35"><a href="#lookup_patent-35"><span class="linenos">35</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Lookup a patent using Google Patents and return the result as a dictionary.</span>
+</span><span id="lookup_patent-36"><a href="#lookup_patent-36"><span class="linenos">36</span></a>
+</span><span id="lookup_patent-37"><a href="#lookup_patent-37"><span class="linenos">37</span></a><span class="sd">    Args:</span>
+</span><span id="lookup_patent-38"><a href="#lookup_patent-38"><span class="linenos">38</span></a><span class="sd">        q: The query string to search for patents.</span>
+</span><span id="lookup_patent-39"><a href="#lookup_patent-39"><span class="linenos">39</span></a><span class="sd">        api_key: The API key for authenticating with SerpApi.</span>
+</span><span id="lookup_patent-40"><a href="#lookup_patent-40"><span class="linenos">40</span></a>
+</span><span id="lookup_patent-41"><a href="#lookup_patent-41"><span class="linenos">41</span></a><span class="sd">    Returns:</span>
+</span><span id="lookup_patent-42"><a href="#lookup_patent-42"><span class="linenos">42</span></a><span class="sd">        A dictionary containing the patent search results.</span>
+</span><span id="lookup_patent-43"><a href="#lookup_patent-43"><span class="linenos">43</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="lookup_patent-44"><a href="#lookup_patent-44"><span class="linenos">44</span></a>    <span class="n">search</span> <span class="o">=</span> <span class="n">GoogleSearch</span><span class="p">({</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">,</span> <span class="s2">&quot;engine&quot;</span><span class="p">:</span> <span class="s2">&quot;google_patents&quot;</span><span class="p">,</span> <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">})</span>
+</span><span id="lookup_patent-45"><a href="#lookup_patent-45"><span class="linenos">45</span></a>    <span class="k">return</span> <span class="n">search</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
+</span></pre></div>
+
+
+            <div class="docstring"><p>Lookup a patent using Google Patents and return the result as a dictionary.</p>
+
+<p>Args:
+    q: The query string to search for patents.
+    api_key: The API key for authenticating with SerpApi.</p>
+
+<p>Returns:
+    A dictionary containing the patent search results.</p>
+</div>
+
+
+                </section>
                 <section id="parse_extended_patent_number">
                             <input id="parse_extended_patent_number-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -722,35 +807,54 @@ in more projects.</p>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">write_data_table</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>,</span><span class="param">	<span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">column_widths</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="kc">None</span>:</span></span>
+        <span class="name">write_data_table</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]]</span>,</span><span class="param">	<span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>,</span><span class="param">	<span class="n">column_widths</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="n">_io</span><span class="o">.</span><span class="n">BytesIO</span> <span class="o">|</span> <span class="kc">None</span>:</span></span>
 
                 <label class="view-source-button" for="write_data_table-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#write_data_table"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="write_data_table-19"><a href="#write_data_table-19"><span class="linenos">19</span></a><span class="k">def</span> <span class="nf">write_data_table</span><span class="p">(</span>
-</span><span id="write_data_table-20"><a href="#write_data_table-20"><span class="linenos">20</span></a>    <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
-</span><span id="write_data_table-21"><a href="#write_data_table-21"><span class="linenos">21</span></a>    <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="write_data_table-22"><a href="#write_data_table-22"><span class="linenos">22</span></a>    <span class="n">column_widths</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
-</span><span id="write_data_table-23"><a href="#write_data_table-23"><span class="linenos">23</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="write_data_table-24"><a href="#write_data_table-24"><span class="linenos">24</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Write dictionaries to a file (CSV or XLSX, based on the file extension).&quot;&quot;&quot;</span>
-</span><span id="write_data_table-25"><a href="#write_data_table-25"><span class="linenos">25</span></a>    <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
-</span><span id="write_data_table-26"><a href="#write_data_table-26"><span class="linenos">26</span></a>        <span class="c1"># Default to .xlsx if file_path is None</span>
-</span><span id="write_data_table-27"><a href="#write_data_table-27"><span class="linenos">27</span></a>        <span class="n">write_dicts_to_xlsx</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="s2">&quot;default.xlsx&quot;</span><span class="p">,</span> <span class="n">column_widths</span><span class="o">=</span><span class="n">column_widths</span><span class="p">)</span>
-</span><span id="write_data_table-28"><a href="#write_data_table-28"><span class="linenos">28</span></a>        <span class="k">return</span>
-</span><span id="write_data_table-29"><a href="#write_data_table-29"><span class="linenos">29</span></a>
-</span><span id="write_data_table-30"><a href="#write_data_table-30"><span class="linenos">30</span></a>    <span class="n">_</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
-</span><span id="write_data_table-31"><a href="#write_data_table-31"><span class="linenos">31</span></a>
-</span><span id="write_data_table-32"><a href="#write_data_table-32"><span class="linenos">32</span></a>    <span class="k">if</span> <span class="n">file_extension</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;.csv&quot;</span><span class="p">:</span>
-</span><span id="write_data_table-33"><a href="#write_data_table-33"><span class="linenos">33</span></a>        <span class="n">write_dicts_to_csv</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
-</span><span id="write_data_table-34"><a href="#write_data_table-34"><span class="linenos">34</span></a>    <span class="k">elif</span> <span class="n">file_extension</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;.xlsx&quot;</span><span class="p">:</span>
-</span><span id="write_data_table-35"><a href="#write_data_table-35"><span class="linenos">35</span></a>        <span class="n">write_dicts_to_xlsx</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">column_widths</span><span class="o">=</span><span class="n">column_widths</span><span class="p">)</span>
-</span><span id="write_data_table-36"><a href="#write_data_table-36"><span class="linenos">36</span></a>    <span class="k">else</span><span class="p">:</span>
-</span><span id="write_data_table-37"><a href="#write_data_table-37"><span class="linenos">37</span></a>        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported file type&quot;</span><span class="p">)</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="write_data_table-18"><a href="#write_data_table-18"><span class="linenos">18</span></a><span class="k">def</span> <span class="nf">write_data_table</span><span class="p">(</span>
+</span><span id="write_data_table-19"><a href="#write_data_table-19"><span class="linenos">19</span></a>    <span class="n">data</span><span class="p">:</span> <span class="nb">list</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]],</span>
+</span><span id="write_data_table-20"><a href="#write_data_table-20"><span class="linenos">20</span></a>    <span class="n">file_path</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="write_data_table-21"><a href="#write_data_table-21"><span class="linenos">21</span></a>    <span class="n">column_widths</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">]</span> <span class="o">|</span> <span class="kc">None</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+</span><span id="write_data_table-22"><a href="#write_data_table-22"><span class="linenos">22</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BytesIO</span> <span class="o">|</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="write_data_table-23"><a href="#write_data_table-23"><span class="linenos">23</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+</span><span id="write_data_table-24"><a href="#write_data_table-24"><span class="linenos">24</span></a><span class="sd">    Write dictionaries to a file (CSV or XLSX, based on the file extension).</span>
+</span><span id="write_data_table-25"><a href="#write_data_table-25"><span class="linenos">25</span></a>
+</span><span id="write_data_table-26"><a href="#write_data_table-26"><span class="linenos">26</span></a><span class="sd">    Args:</span>
+</span><span id="write_data_table-27"><a href="#write_data_table-27"><span class="linenos">27</span></a><span class="sd">        data: List of dictionaries containing the tabular data.</span>
+</span><span id="write_data_table-28"><a href="#write_data_table-28"><span class="linenos">28</span></a><span class="sd">        file_path: Path to the output file. If None, defaults to an XLSX file in memory.</span>
+</span><span id="write_data_table-29"><a href="#write_data_table-29"><span class="linenos">29</span></a><span class="sd">        column_widths: Optional dictionary specifying the width of each column.</span>
+</span><span id="write_data_table-30"><a href="#write_data_table-30"><span class="linenos">30</span></a>
+</span><span id="write_data_table-31"><a href="#write_data_table-31"><span class="linenos">31</span></a><span class="sd">    Returns:</span>
+</span><span id="write_data_table-32"><a href="#write_data_table-32"><span class="linenos">32</span></a><span class="sd">        A BytesIO object containing the XLSX data if file_path is None and the</span>
+</span><span id="write_data_table-33"><a href="#write_data_table-33"><span class="linenos">33</span></a><span class="sd">        format is XLSX, otherwise None.</span>
+</span><span id="write_data_table-34"><a href="#write_data_table-34"><span class="linenos">34</span></a><span class="sd">    &quot;&quot;&quot;</span>
+</span><span id="write_data_table-35"><a href="#write_data_table-35"><span class="linenos">35</span></a>    <span class="k">if</span> <span class="n">file_path</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+</span><span id="write_data_table-36"><a href="#write_data_table-36"><span class="linenos">36</span></a>        <span class="c1"># Default to .xlsx if file_path is None</span>
+</span><span id="write_data_table-37"><a href="#write_data_table-37"><span class="linenos">37</span></a>        <span class="k">return</span> <span class="n">write_dicts_to_xlsx</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="n">column_widths</span><span class="o">=</span><span class="n">column_widths</span><span class="p">)</span>
+</span><span id="write_data_table-38"><a href="#write_data_table-38"><span class="linenos">38</span></a>
+</span><span id="write_data_table-39"><a href="#write_data_table-39"><span class="linenos">39</span></a>    <span class="n">_</span><span class="p">,</span> <span class="n">file_extension</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">file_path</span><span class="p">)</span>
+</span><span id="write_data_table-40"><a href="#write_data_table-40"><span class="linenos">40</span></a>
+</span><span id="write_data_table-41"><a href="#write_data_table-41"><span class="linenos">41</span></a>    <span class="k">if</span> <span class="n">file_extension</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;.csv&quot;</span><span class="p">:</span>
+</span><span id="write_data_table-42"><a href="#write_data_table-42"><span class="linenos">42</span></a>        <span class="n">write_dicts_to_csv</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">file_path</span><span class="p">)</span>
+</span><span id="write_data_table-43"><a href="#write_data_table-43"><span class="linenos">43</span></a>        <span class="k">return</span> <span class="kc">None</span>
+</span><span id="write_data_table-44"><a href="#write_data_table-44"><span class="linenos">44</span></a>    <span class="k">if</span> <span class="n">file_extension</span><span class="o">.</span><span class="n">lower</span><span class="p">()</span> <span class="o">==</span> <span class="s2">&quot;.xlsx&quot;</span><span class="p">:</span>
+</span><span id="write_data_table-45"><a href="#write_data_table-45"><span class="linenos">45</span></a>        <span class="k">return</span> <span class="n">write_dicts_to_xlsx</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">file_path</span><span class="p">,</span> <span class="n">column_widths</span><span class="o">=</span><span class="n">column_widths</span><span class="p">)</span>
+</span><span id="write_data_table-46"><a href="#write_data_table-46"><span class="linenos">46</span></a>    <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s2">&quot;Unsupported file type&quot;</span><span class="p">)</span>
 </span></pre></div>
 
 
             <div class="docstring"><p>Write dictionaries to a file (CSV or XLSX, based on the file extension).</p>
+
+<p>Args:
+    data: List of dictionaries containing the tabular data.
+    file_path: Path to the output file. If None, defaults to an XLSX file in memory.
+    column_widths: Optional dictionary specifying the width of each column.</p>
+
+<p>Returns:
+    A BytesIO object containing the XLSX data if file_path is None and the
+    format is XLSX, otherwise None.</p>
 </div>
 
 
