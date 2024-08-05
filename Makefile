@@ -2,7 +2,7 @@ PACKAGE_NAME:=degel_python_utils
 PYTHON:=python
 PIPENV:=pipenv
 SRC_DIR:=src
-TESTS_DIR:=tests
+# TESTS_DIR:=tests
 
 .DEFAULT_GOAL := help
 
