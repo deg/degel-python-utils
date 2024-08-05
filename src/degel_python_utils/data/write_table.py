@@ -1,4 +1,4 @@
-"""Support for writing tabular data."""
+"""Support for writing tabular data to a file or data stream, in CSV or XLSX."""
 
 import csv
 from io import BytesIO
@@ -8,38 +8,56 @@ from openpyxl import Workbook
 from openpyxl.styles import Font, Alignment
 from openpyxl.utils import get_column_letter
 
-
-from ..sys_utils.errors import UnsupportedError
 from ..sys_utils.log_tools import setup_logger
 
 logger = setup_logger(__name__)
+# pylint: disable=logging-fstring-interpolation
 
 
 def write_data_table(
     data: list[dict[str, str]],
     file_path: str | None,
     column_widths: dict[str, int] | None = None,
-) -> None:
-    """Write dictionaries to a file (CSV or XLSX, based on the file extension)."""
+) -> BytesIO | None:
+    """
+    Write dictionaries to a file (CSV or XLSX, based on the file extension).
+
+    Args:
+        data: List of dictionaries containing the tabular data.
+        file_path: Path to the output file. If None, defaults to an XLSX file in memory.
+        column_widths: Optional dictionary specifying the width of each column.
+
+    Returns:
+        A BytesIO object containing the XLSX data if file_path is None and the
+        format is XLSX, otherwise None.
+    """
     if file_path is None:
         # Default to .xlsx if file_path is None
-        write_dicts_to_xlsx(data, "default.xlsx", column_widths=column_widths)
-        return
+        return write_dicts_to_xlsx(data, None, column_widths=column_widths)
 
     _, file_extension = os.path.splitext(file_path)
 
     if file_extension.lower() == ".csv":
         write_dicts_to_csv(data, file_path)
-    elif file_extension.lower() == ".xlsx":
-        write_dicts_to_xlsx(data, file_path, column_widths=column_widths)
-    else:
-        raise ValueError("Unsupported file type")
+        return None
+    if file_extension.lower() == ".xlsx":
+        return write_dicts_to_xlsx(data, file_path, column_widths=column_widths)
+    raise ValueError("Unsupported file type")
 
 
 def write_dicts_to_csv(data: list[dict[str, str]], file_path: str) -> None:
-    """Write a list of dictionaries to a CSV file."""
+    """
+    Write a list of dictionaries to a CSV file.
+
+    Args:
+        data: List of dictionaries containing the tabular data.
+        file_path: Path to the output CSV file.
+
+    Raises:
+        ValueError: If file_path is empty.
+    """
     if not file_path:
-        raise UnsupportedError("Write of CSV data to memory buffer")
+        raise ValueError("Write of CSV data to memory buffer is not supported.")
     with open(file_path, mode="w", encoding="utf-8", newline="") as file:
         if data:
             fieldnames = data[0].keys()
@@ -55,11 +73,21 @@ def write_dicts_to_xlsx(
     file_path: str | None = None,
     column_widths: dict[str, int] | None = None,
 ) -> BytesIO | None:
-    """Write a list of dictionaries to an XLSX file."""
+    """
+    Write a list of dictionaries to an XLSX file.
+
+    Args:
+        data: List of dictionaries containing the tabular data.
+        file_path: Path to the output XLSX file. If None, writes to a BytesIO object.
+        column_widths: Optional dictionary specifying the column order and widths.
+
+    Returns:
+        A BytesIO object containing the XLSX data if file_path is None, otherwise None.
+    """
     workbook = Workbook()
     sheet = workbook.active
     if data:
-        headers = list(data[0].keys())
+        headers = list(column_widths.keys()) if column_widths else list(data[0].keys())
         sheet.append(headers)
         header_font = Font(bold=True)
         sheet.row_dimensions[1].height = 30
@@ -77,7 +105,9 @@ def write_dicts_to_xlsx(
                 sheet.column_dimensions[column_letter].width = column_widths[header]
 
         for row in data:
-            sheet.append(list(row.values()))
+            # Write the values in the order of the headers
+            row_values = [row.get(key, "") for key in headers]
+            sheet.append(row_values)
     else:
         print("No data to write.")
 
