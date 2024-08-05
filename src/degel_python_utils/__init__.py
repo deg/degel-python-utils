@@ -9,6 +9,7 @@ from .data.read_table import read_data_table
 from .data.write_table import write_data_table
 from .ip import parse_extended_patent_number
 from .ip.pclient import fetch_us_patent_grant_from_pclient
+from .ip.serpapi import google_search, lookup_patent
 from .ip.uspto import (
     fetch_us_patent_application_from_uspto_api,
     fetch_us_patent_grant_from_uspto_api,
@@ -29,6 +30,8 @@ __all__ = [
     "fetch_us_patent_application_from_uspto_api",
     "fetch_us_patent_grant_from_pclient",
     "fetch_us_patent_grant_from_uspto_api",
+    "google_search",
+    "lookup_patent",
     "parse_extended_patent_number",
     "read_data_table",
     "setup_logger",
