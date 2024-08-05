@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.1.10] - 2024-08-05
+- Add serpapi support for Google and Google Patent searches
+- update dependencies
+
 ## [v0.1.9] - 2024-07-29
 - Add patent fcns: parse_extended_patent_number, fetch_us_patent_grant_from_pclient
 - Add many more pre-commit checks
