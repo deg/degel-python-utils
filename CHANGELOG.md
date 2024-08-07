@@ -1,5 +1,8 @@
 # Changelog
 
+## [v0.1.11] - 2024-08-05
+- Fix missing dependency line in setup.cfg
+
 ## [v0.1.10] - 2024-08-05
 - Add serpapi support for Google and Google Patent searches
 - update dependencies
