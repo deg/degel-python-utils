@@ -19,6 +19,10 @@ def parse_extended_patent_number(patent_number_string: str) -> dict[str, str | N
         dict: Contains parsed components: type_of_citation, country, number_type,
               application_number, and grant_number.
     """
+    # Consider making this an option. It was needed for some of the API interfaces that
+    # we are no longer using.
+    auto_add_a1_kind_code = False
+
     match = pattern.search(patent_number_string)
 
     if match:
@@ -33,8 +37,9 @@ def parse_extended_patent_number(patent_number_string: str) -> dict[str, str | N
             number_type = "Application" if kind_code[0] == "A" else "Grant"
         else:
             number_type = "Grant" if len(patent_number) <= 8 else "Application"
-        if number_type == "Application" and not kind_code:
-            kind_code = "A1"
+        if auto_add_a1_kind_code:
+            if number_type == "Application" and not kind_code:
+                kind_code = "A1"
 
         application_number = patent_number if number_type == "Application" else None
         grant_number = patent_number if number_type == "Grant" else None
