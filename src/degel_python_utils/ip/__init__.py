@@ -65,12 +65,13 @@ def parse_extended_patent_number(patent_number_string: str) -> dict[str, str | N
 # Define the regex pattern for parsing patent numbers
 pattern = re.compile(
     r"""
-    (?<!\w)            # Match starts at BOS or after non-alphanumeric
+    (?<![a-zA-Z0-9])   # Match starts at BOS or after non-alphanumeric
     ([A-Z]{1,3})?      # Optional country code
     [\s\-_]*           # Optional separator (whitespace, hyphen, or underscore)
     (\d{4}[-/]?\d{3,}) # Mandatory patent number; may have separator after year
     [\s\-_]*           # Optional separator (whitespace, hyphen, or underscore)
-    ([AB]\d?(?![\w]))? # Optional code: 'A' or 'B', optionally followed by a digit
+    ([AB]\d?)?         # Optional code: 'A' or 'B', optionally followed by a digit
+    (?![a-zA-Z0-9])    # Match ends at EOS or before non-alphanumeric
     """,
     re.VERBOSE,
 )
