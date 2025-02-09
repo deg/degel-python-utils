@@ -1,5 +1,9 @@
 # Changelog
 
+## [v0.2.0] - 2025-02-09
+
+- Update dependencies
+
 ## [v0.1.12] - 2024-08-08
 
 - Fix edge cases in parsing free-form patent numbers
