@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.0.0] - 2025-03-18
+
+- Breaking change: Remove patent support. It does not belong in this library
+
 ## [v0.2.0] - 2025-02-09
 
 - Update dependencies
