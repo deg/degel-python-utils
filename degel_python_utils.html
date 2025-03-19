@@ -51,24 +51,6 @@
 
             </li>
             <li>
-                    <a class="function" href="#fetch_us_patent_application_from_uspto_api">fetch_us_patent_application_from_uspto_api</a>
-            </li>
-            <li>
-                    <a class="function" href="#fetch_us_patent_grant_from_pclient">fetch_us_patent_grant_from_pclient</a>
-            </li>
-            <li>
-                    <a class="function" href="#fetch_us_patent_grant_from_uspto_api">fetch_us_patent_grant_from_uspto_api</a>
-            </li>
-            <li>
-                    <a class="function" href="#google_search">google_search</a>
-            </li>
-            <li>
-                    <a class="function" href="#lookup_patent">lookup_patent</a>
-            </li>
-            <li>
-                    <a class="function" href="#parse_extended_patent_number">parse_extended_patent_number</a>
-            </li>
-            <li>
                     <a class="function" href="#read_data_table">read_data_table</a>
             </li>
             <li>
@@ -121,37 +103,23 @@ in more projects.</p>
 </span><span id="L-7"><a href="#L-7"><span class="linenos"> 7</span></a>
 </span><span id="L-8"><a href="#L-8"><span class="linenos"> 8</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.data.read_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">read_data_table</span>
 </span><span id="L-9"><a href="#L-9"><span class="linenos"> 9</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.data.write_table</span><span class="w"> </span><span class="kn">import</span> <span class="n">write_data_table</span>
-</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.ip</span><span class="w"> </span><span class="kn">import</span> <span class="n">parse_extended_patent_number</span>
-</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.ip.pclient</span><span class="w"> </span><span class="kn">import</span> <span class="n">fetch_us_patent_grant_from_pclient</span>
-</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.ip.serpapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">google_search</span><span class="p">,</span> <span class="n">lookup_patent</span>
-</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.ip.uspto</span><span class="w"> </span><span class="kn">import</span> <span class="p">(</span>
-</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a>    <span class="n">fetch_us_patent_application_from_uspto_api</span><span class="p">,</span>
-</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>    <span class="n">fetch_us_patent_grant_from_uspto_api</span><span class="p">,</span>
-</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="p">)</span>
-</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.env</span><span class="w"> </span><span class="kn">import</span> <span class="n">appEnv</span>
-</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">DegelUtilsError</span><span class="p">,</span> <span class="n">ExternalApiError</span><span class="p">,</span> <span class="n">UnsupportedError</span>
-</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.file_system</span><span class="w"> </span><span class="kn">import</span> <span class="n">append_to_filename</span>
-</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.log_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
-</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.typing_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComparisonFunction</span>
-</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>
-</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>
-</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
-</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>    <span class="s2">&quot;append_to_filename&quot;</span><span class="p">,</span>
-</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a>    <span class="s2">&quot;appEnv&quot;</span><span class="p">,</span>
-</span><span id="L-27"><a href="#L-27"><span class="linenos">27</span></a>    <span class="s2">&quot;ComparisonFunction&quot;</span><span class="p">,</span>
-</span><span id="L-28"><a href="#L-28"><span class="linenos">28</span></a>    <span class="s2">&quot;DegelUtilsError&quot;</span><span class="p">,</span>
-</span><span id="L-29"><a href="#L-29"><span class="linenos">29</span></a>    <span class="s2">&quot;ExternalApiError&quot;</span><span class="p">,</span>
-</span><span id="L-30"><a href="#L-30"><span class="linenos">30</span></a>    <span class="s2">&quot;fetch_us_patent_application_from_uspto_api&quot;</span><span class="p">,</span>
-</span><span id="L-31"><a href="#L-31"><span class="linenos">31</span></a>    <span class="s2">&quot;fetch_us_patent_grant_from_pclient&quot;</span><span class="p">,</span>
-</span><span id="L-32"><a href="#L-32"><span class="linenos">32</span></a>    <span class="s2">&quot;fetch_us_patent_grant_from_uspto_api&quot;</span><span class="p">,</span>
-</span><span id="L-33"><a href="#L-33"><span class="linenos">33</span></a>    <span class="s2">&quot;google_search&quot;</span><span class="p">,</span>
-</span><span id="L-34"><a href="#L-34"><span class="linenos">34</span></a>    <span class="s2">&quot;lookup_patent&quot;</span><span class="p">,</span>
-</span><span id="L-35"><a href="#L-35"><span class="linenos">35</span></a>    <span class="s2">&quot;parse_extended_patent_number&quot;</span><span class="p">,</span>
-</span><span id="L-36"><a href="#L-36"><span class="linenos">36</span></a>    <span class="s2">&quot;read_data_table&quot;</span><span class="p">,</span>
-</span><span id="L-37"><a href="#L-37"><span class="linenos">37</span></a>    <span class="s2">&quot;setup_logger&quot;</span><span class="p">,</span>
-</span><span id="L-38"><a href="#L-38"><span class="linenos">38</span></a>    <span class="s2">&quot;UnsupportedError&quot;</span><span class="p">,</span>
-</span><span id="L-39"><a href="#L-39"><span class="linenos">39</span></a>    <span class="s2">&quot;write_data_table&quot;</span><span class="p">,</span>
-</span><span id="L-40"><a href="#L-40"><span class="linenos">40</span></a><span class="p">]</span>
+</span><span id="L-10"><a href="#L-10"><span class="linenos">10</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.env</span><span class="w"> </span><span class="kn">import</span> <span class="n">appEnv</span>
+</span><span id="L-11"><a href="#L-11"><span class="linenos">11</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">DegelUtilsError</span><span class="p">,</span> <span class="n">ExternalApiError</span><span class="p">,</span> <span class="n">UnsupportedError</span>
+</span><span id="L-12"><a href="#L-12"><span class="linenos">12</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.file_system</span><span class="w"> </span><span class="kn">import</span> <span class="n">append_to_filename</span>
+</span><span id="L-13"><a href="#L-13"><span class="linenos">13</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.log_tools</span><span class="w"> </span><span class="kn">import</span> <span class="n">setup_logger</span>
+</span><span id="L-14"><a href="#L-14"><span class="linenos">14</span></a><span class="kn">from</span><span class="w"> </span><span class="nn">.sys_utils.typing_helpers</span><span class="w"> </span><span class="kn">import</span> <span class="n">ComparisonFunction</span>
+</span><span id="L-15"><a href="#L-15"><span class="linenos">15</span></a>
+</span><span id="L-16"><a href="#L-16"><span class="linenos">16</span></a><span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span>
+</span><span id="L-17"><a href="#L-17"><span class="linenos">17</span></a>    <span class="s2">&quot;append_to_filename&quot;</span><span class="p">,</span>
+</span><span id="L-18"><a href="#L-18"><span class="linenos">18</span></a>    <span class="s2">&quot;appEnv&quot;</span><span class="p">,</span>
+</span><span id="L-19"><a href="#L-19"><span class="linenos">19</span></a>    <span class="s2">&quot;ComparisonFunction&quot;</span><span class="p">,</span>
+</span><span id="L-20"><a href="#L-20"><span class="linenos">20</span></a>    <span class="s2">&quot;DegelUtilsError&quot;</span><span class="p">,</span>
+</span><span id="L-21"><a href="#L-21"><span class="linenos">21</span></a>    <span class="s2">&quot;ExternalApiError&quot;</span><span class="p">,</span>
+</span><span id="L-22"><a href="#L-22"><span class="linenos">22</span></a>    <span class="s2">&quot;read_data_table&quot;</span><span class="p">,</span>
+</span><span id="L-23"><a href="#L-23"><span class="linenos">23</span></a>    <span class="s2">&quot;setup_logger&quot;</span><span class="p">,</span>
+</span><span id="L-24"><a href="#L-24"><span class="linenos">24</span></a>    <span class="s2">&quot;UnsupportedError&quot;</span><span class="p">,</span>
+</span><span id="L-25"><a href="#L-25"><span class="linenos">25</span></a>    <span class="s2">&quot;write_data_table&quot;</span><span class="p">,</span>
+</span><span id="L-26"><a href="#L-26"><span class="linenos">26</span></a><span class="p">]</span>
 </span></pre></div>
 
 
@@ -318,334 +286,6 @@ in more projects.</p>
 
                             </div>
                 </section>
-                <section id="fetch_us_patent_application_from_uspto_api">
-                            <input id="fetch_us_patent_application_from_uspto_api-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">async def</span>
-        <span class="name">fetch_us_patent_application_from_uspto_api</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">application_number</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">kind_code</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s1">&#39;A1&#39;</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="fetch_us_patent_application_from_uspto_api-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#fetch_us_patent_application_from_uspto_api"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="fetch_us_patent_application_from_uspto_api-27"><a href="#fetch_us_patent_application_from_uspto_api-27"><span class="linenos">27</span></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_us_patent_application_from_uspto_api</span><span class="p">(</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-28"><a href="#fetch_us_patent_application_from_uspto_api-28"><span class="linenos">28</span></a>    <span class="n">application_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">kind_code</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">&quot;A1&quot;</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-29"><a href="#fetch_us_patent_application_from_uspto_api-29"><span class="linenos">29</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-30"><a href="#fetch_us_patent_application_from_uspto_api-30"><span class="linenos">30</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-31"><a href="#fetch_us_patent_application_from_uspto_api-31"><span class="linenos">31</span></a><span class="sd">    Fetch a US patent application from the USPTO API.</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-32"><a href="#fetch_us_patent_application_from_uspto_api-32"><span class="linenos">32</span></a>
-</span><span id="fetch_us_patent_application_from_uspto_api-33"><a href="#fetch_us_patent_application_from_uspto_api-33"><span class="linenos">33</span></a><span class="sd">    :param application_number: The patent number to fetch.</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-34"><a href="#fetch_us_patent_application_from_uspto_api-34"><span class="linenos">34</span></a><span class="sd">    :param kind_code: The kind code of the patent, default is &quot;A1&quot;.</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-35"><a href="#fetch_us_patent_application_from_uspto_api-35"><span class="linenos">35</span></a><span class="sd">    :return: A dictionary containing the patent application details.</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-36"><a href="#fetch_us_patent_application_from_uspto_api-36"><span class="linenos">36</span></a><span class="sd">    :raises ExternalApiError: If the USPTO API request fails.</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-37"><a href="#fetch_us_patent_application_from_uspto_api-37"><span class="linenos">37</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-38"><a href="#fetch_us_patent_application_from_uspto_api-38"><span class="linenos">38</span></a>    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;publicationDocumentIdentifier&quot;</span><span class="p">:</span> <span class="sa">f</span><span class="s2">&quot;US</span><span class="si">{</span><span class="n">application_number</span><span class="si">}{</span><span class="n">kind_code</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">}</span>
-</span><span id="fetch_us_patent_application_from_uspto_api-39"><a href="#fetch_us_patent_application_from_uspto_api-39"><span class="linenos">39</span></a>    <span class="k">return</span> <span class="k">await</span> <span class="n">fetch_from_uspto_api</span><span class="p">(</span><span class="s2">&quot;publications&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Fetch a US patent application from the USPTO API.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>application_number</strong>:  The patent number to fetch.</li>
-<li><strong>kind_code</strong>:  The kind code of the patent, default is "A1".</li>
-</ul>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>A dictionary containing the patent application details.</p>
-</blockquote>
-
-<h6 id="raises">Raises</h6>
-
-<ul>
-<li><strong>ExternalApiError</strong>:  If the USPTO API request fails.</li>
-</ul>
-</div>
-
-
-                </section>
-                <section id="fetch_us_patent_grant_from_pclient">
-                            <input id="fetch_us_patent_grant_from_pclient-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">async def</span>
-        <span class="name">fetch_us_patent_grant_from_pclient</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">patent_number</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">log_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span></span><span class="return-annotation">) -> <span class="nb">dict</span>:</span></span>
-
-                <label class="view-source-button" for="fetch_us_patent_grant_from_pclient-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#fetch_us_patent_grant_from_pclient"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="fetch_us_patent_grant_from_pclient-26"><a href="#fetch_us_patent_grant_from_pclient-26"><span class="linenos">26</span></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_us_patent_grant_from_pclient</span><span class="p">(</span>
-</span><span id="fetch_us_patent_grant_from_pclient-27"><a href="#fetch_us_patent_grant_from_pclient-27"><span class="linenos">27</span></a>    <span class="n">patent_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">log_prefix</span><span class="p">:</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span>
-</span><span id="fetch_us_patent_grant_from_pclient-28"><a href="#fetch_us_patent_grant_from_pclient-28"><span class="linenos">28</span></a><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
-</span><span id="fetch_us_patent_grant_from_pclient-29"><a href="#fetch_us_patent_grant_from_pclient-29"><span class="linenos">29</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="fetch_us_patent_grant_from_pclient-30"><a href="#fetch_us_patent_grant_from_pclient-30"><span class="linenos">30</span></a><span class="sd">    Fetch a granted US patent using the patent-client library.</span>
-</span><span id="fetch_us_patent_grant_from_pclient-31"><a href="#fetch_us_patent_grant_from_pclient-31"><span class="linenos">31</span></a>
-</span><span id="fetch_us_patent_grant_from_pclient-32"><a href="#fetch_us_patent_grant_from_pclient-32"><span class="linenos">32</span></a><span class="sd">    :param patent_number: The patent number to fetch.</span>
-</span><span id="fetch_us_patent_grant_from_pclient-33"><a href="#fetch_us_patent_grant_from_pclient-33"><span class="linenos">33</span></a><span class="sd">    :param log_prefix: Request identifier, for clarity in log messages.</span>
-</span><span id="fetch_us_patent_grant_from_pclient-34"><a href="#fetch_us_patent_grant_from_pclient-34"><span class="linenos">34</span></a><span class="sd">    :return: A dictionary containing the patent application details.</span>
-</span><span id="fetch_us_patent_grant_from_pclient-35"><a href="#fetch_us_patent_grant_from_pclient-35"><span class="linenos">35</span></a><span class="sd">    :raises ExternalApiError: If the patent-client API request fails.</span>
-</span><span id="fetch_us_patent_grant_from_pclient-36"><a href="#fetch_us_patent_grant_from_pclient-36"><span class="linenos">36</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="fetch_us_patent_grant_from_pclient-37"><a href="#fetch_us_patent_grant_from_pclient-37"><span class="linenos">37</span></a>    <span class="n">retries</span> <span class="o">=</span> <span class="mi">0</span>
-</span><span id="fetch_us_patent_grant_from_pclient-38"><a href="#fetch_us_patent_grant_from_pclient-38"><span class="linenos">38</span></a>    <span class="k">while</span> <span class="n">retries</span> <span class="o">&lt;</span> <span class="n">MAX_RETRIES</span><span class="p">:</span>
-</span><span id="fetch_us_patent_grant_from_pclient-39"><a href="#fetch_us_patent_grant_from_pclient-39"><span class="linenos">39</span></a>        <span class="k">try</span><span class="p">:</span>
-</span><span id="fetch_us_patent_grant_from_pclient-40"><a href="#fetch_us_patent_grant_from_pclient-40"><span class="linenos">40</span></a>            <span class="n">patent</span> <span class="o">=</span> <span class="k">await</span> <span class="n">Patent</span><span class="o">.</span><span class="n">objects</span><span class="o">.</span><span class="n">get</span><span class="p">(</span>  <span class="c1"># pylint: disable=no-member</span>
-</span><span id="fetch_us_patent_grant_from_pclient-41"><a href="#fetch_us_patent_grant_from_pclient-41"><span class="linenos">41</span></a>                <span class="n">patent_number</span>
-</span><span id="fetch_us_patent_grant_from_pclient-42"><a href="#fetch_us_patent_grant_from_pclient-42"><span class="linenos">42</span></a>            <span class="p">)</span>
-</span><span id="fetch_us_patent_grant_from_pclient-43"><a href="#fetch_us_patent_grant_from_pclient-43"><span class="linenos">43</span></a>            <span class="k">return</span> <span class="n">patent</span>
-</span><span id="fetch_us_patent_grant_from_pclient-44"><a href="#fetch_us_patent_grant_from_pclient-44"><span class="linenos">44</span></a>        <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">err</span><span class="p">:</span>  <span class="c1"># pylint: disable=broad-except</span>
-</span><span id="fetch_us_patent_grant_from_pclient-45"><a href="#fetch_us_patent_grant_from_pclient-45"><span class="linenos">45</span></a>            <span class="k">if</span> <span class="n">retries</span> <span class="o">&lt;</span> <span class="n">MAX_RETRIES</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-</span><span id="fetch_us_patent_grant_from_pclient-46"><a href="#fetch_us_patent_grant_from_pclient-46"><span class="linenos">46</span></a>                <span class="n">backoff_time</span> <span class="o">=</span> <span class="n">BACKOFF_FACTOR</span> <span class="o">*</span> <span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="n">retries</span><span class="p">)</span>
-</span><span id="fetch_us_patent_grant_from_pclient-47"><a href="#fetch_us_patent_grant_from_pclient-47"><span class="linenos">47</span></a>                <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
-</span><span id="fetch_us_patent_grant_from_pclient-48"><a href="#fetch_us_patent_grant_from_pclient-48"><span class="linenos">48</span></a>                    <span class="sa">f</span><span class="s2">&quot;Retrying </span><span class="si">{</span><span class="n">log_prefix</span><span class="si">}</span><span class="s2"> after </span><span class="si">{</span><span class="n">backoff_time</span><span class="si">}</span><span class="s2">s due to error: </span><span class="si">{</span><span class="n">err</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="fetch_us_patent_grant_from_pclient-49"><a href="#fetch_us_patent_grant_from_pclient-49"><span class="linenos">49</span></a>                <span class="p">)</span>
-</span><span id="fetch_us_patent_grant_from_pclient-50"><a href="#fetch_us_patent_grant_from_pclient-50"><span class="linenos">50</span></a>                <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">backoff_time</span><span class="p">)</span>
-</span><span id="fetch_us_patent_grant_from_pclient-51"><a href="#fetch_us_patent_grant_from_pclient-51"><span class="linenos">51</span></a>                <span class="n">retries</span> <span class="o">+=</span> <span class="mi">1</span>
-</span><span id="fetch_us_patent_grant_from_pclient-52"><a href="#fetch_us_patent_grant_from_pclient-52"><span class="linenos">52</span></a>            <span class="k">else</span><span class="p">:</span>
-</span><span id="fetch_us_patent_grant_from_pclient-53"><a href="#fetch_us_patent_grant_from_pclient-53"><span class="linenos">53</span></a>                <span class="n">logger</span><span class="o">.</span><span class="n">error</span><span class="p">(</span>
-</span><span id="fetch_us_patent_grant_from_pclient-54"><a href="#fetch_us_patent_grant_from_pclient-54"><span class="linenos">54</span></a>                    <span class="sa">f</span><span class="s2">&quot;Failed to fetch patent </span><span class="si">{</span><span class="n">patent_number</span><span class="si">}</span><span class="s2"> (</span><span class="si">{</span><span class="n">MAX_RETRIES</span><span class="si">}</span><span class="s2"> attempts).&quot;</span>
-</span><span id="fetch_us_patent_grant_from_pclient-55"><a href="#fetch_us_patent_grant_from_pclient-55"><span class="linenos">55</span></a>                <span class="p">)</span>
-</span><span id="fetch_us_patent_grant_from_pclient-56"><a href="#fetch_us_patent_grant_from_pclient-56"><span class="linenos">56</span></a>                <span class="k">raise</span> <span class="n">ExternalApiError</span><span class="p">(</span>
-</span><span id="fetch_us_patent_grant_from_pclient-57"><a href="#fetch_us_patent_grant_from_pclient-57"><span class="linenos">57</span></a>                    <span class="s2">&quot;patent-client request failed on &quot;</span>
-</span><span id="fetch_us_patent_grant_from_pclient-58"><a href="#fetch_us_patent_grant_from_pclient-58"><span class="linenos">58</span></a>                    <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">log_prefix</span><span class="si">}</span><span class="s2"> after </span><span class="si">{</span><span class="n">MAX_RETRIES</span><span class="si">}</span><span class="s2"> attempts&quot;</span>
-</span><span id="fetch_us_patent_grant_from_pclient-59"><a href="#fetch_us_patent_grant_from_pclient-59"><span class="linenos">59</span></a>                <span class="p">)</span> <span class="kn">from</span><span class="w"> </span><span class="nn">err</span>
-</span><span id="fetch_us_patent_grant_from_pclient-60"><a href="#fetch_us_patent_grant_from_pclient-60"><span class="linenos">60</span></a>    <span class="c1"># This line is unreachable, but added to satisfy mypy&#39;s requirement</span>
-</span><span id="fetch_us_patent_grant_from_pclient-61"><a href="#fetch_us_patent_grant_from_pclient-61"><span class="linenos">61</span></a>    <span class="k">raise</span> <span class="n">ExternalApiError</span><span class="p">(</span>
-</span><span id="fetch_us_patent_grant_from_pclient-62"><a href="#fetch_us_patent_grant_from_pclient-62"><span class="linenos">62</span></a>        <span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">log_prefix</span><span class="si">}</span><span class="s2"> Unhandled error fetching patent </span><span class="si">{</span><span class="n">patent_number</span><span class="si">}</span><span class="s2">&quot;</span>
-</span><span id="fetch_us_patent_grant_from_pclient-63"><a href="#fetch_us_patent_grant_from_pclient-63"><span class="linenos">63</span></a>    <span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Fetch a granted US patent using the patent-client library.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>patent_number</strong>:  The patent number to fetch.</li>
-<li><strong>log_prefix</strong>:  Request identifier, for clarity in log messages.</li>
-</ul>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>A dictionary containing the patent application details.</p>
-</blockquote>
-
-<h6 id="raises">Raises</h6>
-
-<ul>
-<li><strong>ExternalApiError</strong>:  If the patent-client API request fails.</li>
-</ul>
-</div>
-
-
-                </section>
-                <section id="fetch_us_patent_grant_from_uspto_api">
-                            <input id="fetch_us_patent_grant_from_uspto_api-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">async def</span>
-        <span class="name">fetch_us_patent_grant_from_uspto_api</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">patent_number</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="fetch_us_patent_grant_from_uspto_api-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#fetch_us_patent_grant_from_uspto_api"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="fetch_us_patent_grant_from_uspto_api-42"><a href="#fetch_us_patent_grant_from_uspto_api-42"><span class="linenos">42</span></a><span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">fetch_us_patent_grant_from_uspto_api</span><span class="p">(</span><span class="n">patent_number</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
-</span><span id="fetch_us_patent_grant_from_uspto_api-43"><a href="#fetch_us_patent_grant_from_uspto_api-43"><span class="linenos">43</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="fetch_us_patent_grant_from_uspto_api-44"><a href="#fetch_us_patent_grant_from_uspto_api-44"><span class="linenos">44</span></a><span class="sd">    Fetch a granted US patent from the USPTO API.</span>
-</span><span id="fetch_us_patent_grant_from_uspto_api-45"><a href="#fetch_us_patent_grant_from_uspto_api-45"><span class="linenos">45</span></a>
-</span><span id="fetch_us_patent_grant_from_uspto_api-46"><a href="#fetch_us_patent_grant_from_uspto_api-46"><span class="linenos">46</span></a><span class="sd">    :param patent_number: The patent number to fetch.</span>
-</span><span id="fetch_us_patent_grant_from_uspto_api-47"><a href="#fetch_us_patent_grant_from_uspto_api-47"><span class="linenos">47</span></a><span class="sd">    :return: A dictionary containing the patent grant details.</span>
-</span><span id="fetch_us_patent_grant_from_uspto_api-48"><a href="#fetch_us_patent_grant_from_uspto_api-48"><span class="linenos">48</span></a><span class="sd">    :raises ExternalApiError: If the USPTO API request fails.</span>
-</span><span id="fetch_us_patent_grant_from_uspto_api-49"><a href="#fetch_us_patent_grant_from_uspto_api-49"><span class="linenos">49</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="fetch_us_patent_grant_from_uspto_api-50"><a href="#fetch_us_patent_grant_from_uspto_api-50"><span class="linenos">50</span></a>    <span class="n">params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">&quot;patentNumber&quot;</span><span class="p">:</span> <span class="n">patent_number</span><span class="p">}</span>
-</span><span id="fetch_us_patent_grant_from_uspto_api-51"><a href="#fetch_us_patent_grant_from_uspto_api-51"><span class="linenos">51</span></a>    <span class="k">return</span> <span class="k">await</span> <span class="n">fetch_from_uspto_api</span><span class="p">(</span><span class="s2">&quot;grants&quot;</span><span class="p">,</span> <span class="n">params</span><span class="p">)</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Fetch a granted US patent from the USPTO API.</p>
-
-<h6 id="parameters">Parameters</h6>
-
-<ul>
-<li><strong>patent_number</strong>:  The patent number to fetch.</li>
-</ul>
-
-<h6 id="returns">Returns</h6>
-
-<blockquote>
-  <p>A dictionary containing the patent grant details.</p>
-</blockquote>
-
-<h6 id="raises">Raises</h6>
-
-<ul>
-<li><strong>ExternalApiError</strong>:  If the USPTO API request fails.</li>
-</ul>
-</div>
-
-
-                </section>
-                <section id="google_search">
-                            <input id="google_search-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">google_search</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">q</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="google_search-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#google_search"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="google_search-20"><a href="#google_search-20"><span class="linenos">20</span></a><span class="k">def</span><span class="w"> </span><span class="nf">google_search</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="google_search-21"><a href="#google_search-21"><span class="linenos">21</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Perform a Google search and return the result as a dictionary.</span>
-</span><span id="google_search-22"><a href="#google_search-22"><span class="linenos">22</span></a>
-</span><span id="google_search-23"><a href="#google_search-23"><span class="linenos">23</span></a><span class="sd">    Args:</span>
-</span><span id="google_search-24"><a href="#google_search-24"><span class="linenos">24</span></a><span class="sd">        q: The query string to search for.</span>
-</span><span id="google_search-25"><a href="#google_search-25"><span class="linenos">25</span></a><span class="sd">        api_key: The API key for authenticating with SerpApi.</span>
-</span><span id="google_search-26"><a href="#google_search-26"><span class="linenos">26</span></a>
-</span><span id="google_search-27"><a href="#google_search-27"><span class="linenos">27</span></a><span class="sd">    Returns:</span>
-</span><span id="google_search-28"><a href="#google_search-28"><span class="linenos">28</span></a><span class="sd">        A dictionary containing the search results.</span>
-</span><span id="google_search-29"><a href="#google_search-29"><span class="linenos">29</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="google_search-30"><a href="#google_search-30"><span class="linenos">30</span></a>    <span class="n">search</span> <span class="o">=</span> <span class="n">GoogleSearch</span><span class="p">({</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">,</span> <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">})</span>
-</span><span id="google_search-31"><a href="#google_search-31"><span class="linenos">31</span></a>    <span class="k">return</span> <span class="n">search</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Perform a Google search and return the result as a dictionary.</p>
-
-<p>Args:
-    q: The query string to search for.
-    api_key: The API key for authenticating with SerpApi.</p>
-
-<p>Returns:
-    A dictionary containing the search results.</p>
-</div>
-
-
-                </section>
-                <section id="lookup_patent">
-                            <input id="lookup_patent-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">lookup_patent</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">q</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">typing</span><span class="o">.</span><span class="n">Any</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="lookup_patent-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#lookup_patent"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="lookup_patent-34"><a href="#lookup_patent-34"><span class="linenos">34</span></a><span class="k">def</span><span class="w"> </span><span class="nf">lookup_patent</span><span class="p">(</span><span class="n">q</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">api_key</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Any</span><span class="p">]:</span>
-</span><span id="lookup_patent-35"><a href="#lookup_patent-35"><span class="linenos">35</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Lookup a patent using Google Patents and return the result as a dictionary.</span>
-</span><span id="lookup_patent-36"><a href="#lookup_patent-36"><span class="linenos">36</span></a>
-</span><span id="lookup_patent-37"><a href="#lookup_patent-37"><span class="linenos">37</span></a><span class="sd">    Args:</span>
-</span><span id="lookup_patent-38"><a href="#lookup_patent-38"><span class="linenos">38</span></a><span class="sd">        q: The query string to search for patents.</span>
-</span><span id="lookup_patent-39"><a href="#lookup_patent-39"><span class="linenos">39</span></a><span class="sd">        api_key: The API key for authenticating with SerpApi.</span>
-</span><span id="lookup_patent-40"><a href="#lookup_patent-40"><span class="linenos">40</span></a>
-</span><span id="lookup_patent-41"><a href="#lookup_patent-41"><span class="linenos">41</span></a><span class="sd">    Returns:</span>
-</span><span id="lookup_patent-42"><a href="#lookup_patent-42"><span class="linenos">42</span></a><span class="sd">        A dictionary containing the patent search results.</span>
-</span><span id="lookup_patent-43"><a href="#lookup_patent-43"><span class="linenos">43</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="lookup_patent-44"><a href="#lookup_patent-44"><span class="linenos">44</span></a>    <span class="n">search</span> <span class="o">=</span> <span class="n">GoogleSearch</span><span class="p">({</span><span class="s2">&quot;q&quot;</span><span class="p">:</span> <span class="n">q</span><span class="p">,</span> <span class="s2">&quot;engine&quot;</span><span class="p">:</span> <span class="s2">&quot;google_patents&quot;</span><span class="p">,</span> <span class="s2">&quot;api_key&quot;</span><span class="p">:</span> <span class="n">api_key</span><span class="p">})</span>
-</span><span id="lookup_patent-45"><a href="#lookup_patent-45"><span class="linenos">45</span></a>    <span class="k">return</span> <span class="n">search</span><span class="o">.</span><span class="n">get_dict</span><span class="p">()</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Lookup a patent using Google Patents and return the result as a dictionary.</p>
-
-<p>Args:
-    q: The query string to search for patents.
-    api_key: The API key for authenticating with SerpApi.</p>
-
-<p>Returns:
-    A dictionary containing the patent search results.</p>
-</div>
-
-
-                </section>
-                <section id="parse_extended_patent_number">
-                            <input id="parse_extended_patent_number-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
-<div class="attr function">
-            
-        <span class="def">def</span>
-        <span class="name">parse_extended_patent_number</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">patent_number_string</span><span class="p">:</span> <span class="nb">str</span></span><span class="return-annotation">) -> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]</span>:</span></span>
-
-                <label class="view-source-button" for="parse_extended_patent_number-view-source"><span>View Source</span></label>
-
-    </div>
-    <a class="headerlink" href="#parse_extended_patent_number"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="parse_extended_patent_number-12"><a href="#parse_extended_patent_number-12"><span class="linenos">12</span></a><span class="k">def</span><span class="w"> </span><span class="nf">parse_extended_patent_number</span><span class="p">(</span><span class="n">patent_number_string</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span> <span class="o">|</span> <span class="kc">None</span><span class="p">]:</span>
-</span><span id="parse_extended_patent_number-13"><a href="#parse_extended_patent_number-13"><span class="linenos">13</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-</span><span id="parse_extended_patent_number-14"><a href="#parse_extended_patent_number-14"><span class="linenos">14</span></a><span class="sd">    Parse an extended patent number string into its components.</span>
-</span><span id="parse_extended_patent_number-15"><a href="#parse_extended_patent_number-15"><span class="linenos">15</span></a>
-</span><span id="parse_extended_patent_number-16"><a href="#parse_extended_patent_number-16"><span class="linenos">16</span></a><span class="sd">    Args:</span>
-</span><span id="parse_extended_patent_number-17"><a href="#parse_extended_patent_number-17"><span class="linenos">17</span></a><span class="sd">        patent_number_string (str): The extended patent number string to parse.</span>
-</span><span id="parse_extended_patent_number-18"><a href="#parse_extended_patent_number-18"><span class="linenos">18</span></a>
-</span><span id="parse_extended_patent_number-19"><a href="#parse_extended_patent_number-19"><span class="linenos">19</span></a><span class="sd">    Returns:</span>
-</span><span id="parse_extended_patent_number-20"><a href="#parse_extended_patent_number-20"><span class="linenos">20</span></a><span class="sd">        dict: Contains parsed components: type_of_citation, country, number_type,</span>
-</span><span id="parse_extended_patent_number-21"><a href="#parse_extended_patent_number-21"><span class="linenos">21</span></a><span class="sd">              application_number, and grant_number.</span>
-</span><span id="parse_extended_patent_number-22"><a href="#parse_extended_patent_number-22"><span class="linenos">22</span></a><span class="sd">    &quot;&quot;&quot;</span>
-</span><span id="parse_extended_patent_number-23"><a href="#parse_extended_patent_number-23"><span class="linenos">23</span></a>    <span class="c1"># Consider making this an option. It was needed for some of the API interfaces that</span>
-</span><span id="parse_extended_patent_number-24"><a href="#parse_extended_patent_number-24"><span class="linenos">24</span></a>    <span class="c1"># we are no longer using.</span>
-</span><span id="parse_extended_patent_number-25"><a href="#parse_extended_patent_number-25"><span class="linenos">25</span></a>    <span class="n">auto_add_a1_kind_code</span> <span class="o">=</span> <span class="kc">False</span>
-</span><span id="parse_extended_patent_number-26"><a href="#parse_extended_patent_number-26"><span class="linenos">26</span></a>
-</span><span id="parse_extended_patent_number-27"><a href="#parse_extended_patent_number-27"><span class="linenos">27</span></a>    <span class="n">match</span> <span class="o">=</span> <span class="n">pattern</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">patent_number_string</span><span class="p">)</span>
-</span><span id="parse_extended_patent_number-28"><a href="#parse_extended_patent_number-28"><span class="linenos">28</span></a>
-</span><span id="parse_extended_patent_number-29"><a href="#parse_extended_patent_number-29"><span class="linenos">29</span></a>    <span class="k">if</span> <span class="n">match</span><span class="p">:</span>
-</span><span id="parse_extended_patent_number-30"><a href="#parse_extended_patent_number-30"><span class="linenos">30</span></a>        <span class="n">country_code</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
-</span><span id="parse_extended_patent_number-31"><a href="#parse_extended_patent_number-31"><span class="linenos">31</span></a>        <span class="n">patent_number</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;-&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">)</span>
-</span><span id="parse_extended_patent_number-32"><a href="#parse_extended_patent_number-32"><span class="linenos">32</span></a>        <span class="n">kind_code</span> <span class="o">=</span> <span class="n">match</span><span class="o">.</span><span class="n">group</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span>
-</span><span id="parse_extended_patent_number-33"><a href="#parse_extended_patent_number-33"><span class="linenos">33</span></a>
-</span><span id="parse_extended_patent_number-34"><a href="#parse_extended_patent_number-34"><span class="linenos">34</span></a>        <span class="n">country</span> <span class="o">=</span> <span class="n">country_code</span><span class="p">[:</span><span class="mi">2</span><span class="p">]</span> <span class="k">if</span> <span class="n">country_code</span> <span class="k">else</span> <span class="s2">&quot;&quot;</span>
-</span><span id="parse_extended_patent_number-35"><a href="#parse_extended_patent_number-35"><span class="linenos">35</span></a>        <span class="n">type_of_citation</span> <span class="o">=</span> <span class="s2">&quot;Patent&quot;</span>
-</span><span id="parse_extended_patent_number-36"><a href="#parse_extended_patent_number-36"><span class="linenos">36</span></a>
-</span><span id="parse_extended_patent_number-37"><a href="#parse_extended_patent_number-37"><span class="linenos">37</span></a>        <span class="k">if</span> <span class="n">kind_code</span><span class="p">:</span>
-</span><span id="parse_extended_patent_number-38"><a href="#parse_extended_patent_number-38"><span class="linenos">38</span></a>            <span class="n">number_type</span> <span class="o">=</span> <span class="s2">&quot;Application&quot;</span> <span class="k">if</span> <span class="n">kind_code</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;A&quot;</span> <span class="k">else</span> <span class="s2">&quot;Grant&quot;</span>
-</span><span id="parse_extended_patent_number-39"><a href="#parse_extended_patent_number-39"><span class="linenos">39</span></a>        <span class="k">else</span><span class="p">:</span>
-</span><span id="parse_extended_patent_number-40"><a href="#parse_extended_patent_number-40"><span class="linenos">40</span></a>            <span class="n">number_type</span> <span class="o">=</span> <span class="s2">&quot;Grant&quot;</span> <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">patent_number</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">8</span> <span class="k">else</span> <span class="s2">&quot;Application&quot;</span>
-</span><span id="parse_extended_patent_number-41"><a href="#parse_extended_patent_number-41"><span class="linenos">41</span></a>        <span class="k">if</span> <span class="n">auto_add_a1_kind_code</span><span class="p">:</span>
-</span><span id="parse_extended_patent_number-42"><a href="#parse_extended_patent_number-42"><span class="linenos">42</span></a>            <span class="k">if</span> <span class="n">number_type</span> <span class="o">==</span> <span class="s2">&quot;Application&quot;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">kind_code</span><span class="p">:</span>
-</span><span id="parse_extended_patent_number-43"><a href="#parse_extended_patent_number-43"><span class="linenos">43</span></a>                <span class="n">kind_code</span> <span class="o">=</span> <span class="s2">&quot;A1&quot;</span>
-</span><span id="parse_extended_patent_number-44"><a href="#parse_extended_patent_number-44"><span class="linenos">44</span></a>
-</span><span id="parse_extended_patent_number-45"><a href="#parse_extended_patent_number-45"><span class="linenos">45</span></a>        <span class="n">application_number</span> <span class="o">=</span> <span class="n">patent_number</span> <span class="k">if</span> <span class="n">number_type</span> <span class="o">==</span> <span class="s2">&quot;Application&quot;</span> <span class="k">else</span> <span class="kc">None</span>
-</span><span id="parse_extended_patent_number-46"><a href="#parse_extended_patent_number-46"><span class="linenos">46</span></a>        <span class="n">grant_number</span> <span class="o">=</span> <span class="n">patent_number</span> <span class="k">if</span> <span class="n">number_type</span> <span class="o">==</span> <span class="s2">&quot;Grant&quot;</span> <span class="k">else</span> <span class="kc">None</span>
-</span><span id="parse_extended_patent_number-47"><a href="#parse_extended_patent_number-47"><span class="linenos">47</span></a>
-</span><span id="parse_extended_patent_number-48"><a href="#parse_extended_patent_number-48"><span class="linenos">48</span></a>    <span class="k">else</span><span class="p">:</span>
-</span><span id="parse_extended_patent_number-49"><a href="#parse_extended_patent_number-49"><span class="linenos">49</span></a>        <span class="n">type_of_citation</span> <span class="o">=</span> <span class="s2">&quot;NPL&quot;</span>
-</span><span id="parse_extended_patent_number-50"><a href="#parse_extended_patent_number-50"><span class="linenos">50</span></a>        <span class="n">country</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="parse_extended_patent_number-51"><a href="#parse_extended_patent_number-51"><span class="linenos">51</span></a>        <span class="n">number_type</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="parse_extended_patent_number-52"><a href="#parse_extended_patent_number-52"><span class="linenos">52</span></a>        <span class="n">kind_code</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="parse_extended_patent_number-53"><a href="#parse_extended_patent_number-53"><span class="linenos">53</span></a>        <span class="n">application_number</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="parse_extended_patent_number-54"><a href="#parse_extended_patent_number-54"><span class="linenos">54</span></a>        <span class="n">grant_number</span> <span class="o">=</span> <span class="kc">None</span>
-</span><span id="parse_extended_patent_number-55"><a href="#parse_extended_patent_number-55"><span class="linenos">55</span></a>
-</span><span id="parse_extended_patent_number-56"><a href="#parse_extended_patent_number-56"><span class="linenos">56</span></a>    <span class="k">return</span> <span class="p">{</span>
-</span><span id="parse_extended_patent_number-57"><a href="#parse_extended_patent_number-57"><span class="linenos">57</span></a>        <span class="s2">&quot;type_of_citation&quot;</span><span class="p">:</span> <span class="n">type_of_citation</span><span class="p">,</span>
-</span><span id="parse_extended_patent_number-58"><a href="#parse_extended_patent_number-58"><span class="linenos">58</span></a>        <span class="s2">&quot;country&quot;</span><span class="p">:</span> <span class="n">country</span><span class="p">,</span>
-</span><span id="parse_extended_patent_number-59"><a href="#parse_extended_patent_number-59"><span class="linenos">59</span></a>        <span class="s2">&quot;number_type&quot;</span><span class="p">:</span> <span class="n">number_type</span><span class="p">,</span>
-</span><span id="parse_extended_patent_number-60"><a href="#parse_extended_patent_number-60"><span class="linenos">60</span></a>        <span class="s2">&quot;kind_code&quot;</span><span class="p">:</span> <span class="n">kind_code</span><span class="p">,</span>
-</span><span id="parse_extended_patent_number-61"><a href="#parse_extended_patent_number-61"><span class="linenos">61</span></a>        <span class="s2">&quot;application_number&quot;</span><span class="p">:</span> <span class="n">application_number</span><span class="p">,</span>
-</span><span id="parse_extended_patent_number-62"><a href="#parse_extended_patent_number-62"><span class="linenos">62</span></a>        <span class="s2">&quot;grant_number&quot;</span><span class="p">:</span> <span class="n">grant_number</span><span class="p">,</span>
-</span><span id="parse_extended_patent_number-63"><a href="#parse_extended_patent_number-63"><span class="linenos">63</span></a>    <span class="p">}</span>
-</span></pre></div>
-
-
-            <div class="docstring"><p>Parse an extended patent number string into its components.</p>
-
-<p>Args:
-    patent_number_string (str): The extended patent number string to parse.</p>
-
-<p>Returns:
-    dict: Contains parsed components: type_of_citation, country, number_type,
-          application_number, and grant_number.</p>
-</div>
-
-
-                </section>
                 <section id="read_data_table">
                             <input id="read_data_table-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
@@ -704,20 +344,20 @@ in more projects.</p>
 <div class="attr function">
             
         <span class="def">def</span>
-        <span class="name">setup_logger</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">name</span><span class="p">:</span> <span class="nb">str</span>, </span><span class="param"><span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span></span><span class="return-annotation">) -> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span>:</span></span>
+        <span class="name">setup_logger</span><span class="signature pdoc-code multiline">(<span class="param">	<span class="n">name</span><span class="p">:</span> <span class="nb">str</span>,</span><span class="param">	<span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span></span><span class="return-annotation">) -> <span class="n">degel_python_utils</span><span class="o">.</span><span class="n">sys_utils</span><span class="o">.</span><span class="n">log_tools</span><span class="o">.</span><span class="n">DegelLogger</span>:</span></span>
 
                 <label class="view-source-button" for="setup_logger-view-source"><span>View Source</span></label>
 
     </div>
     <a class="headerlink" href="#setup_logger"></a>
-            <div class="pdoc-code codehilite"><pre><span></span><span id="setup_logger-12"><a href="#setup_logger-12"><span class="linenos">12</span></a><span class="k">def</span><span class="w"> </span><span class="nf">setup_logger</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">logging</span><span class="o">.</span><span class="n">Logger</span><span class="p">:</span>
-</span><span id="setup_logger-13"><a href="#setup_logger-13"><span class="linenos">13</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Set up and return a logger with the specified name.&quot;&quot;&quot;</span>
-</span><span id="setup_logger-14"><a href="#setup_logger-14"><span class="linenos">14</span></a>    <span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
-</span><span id="setup_logger-15"><a href="#setup_logger-15"><span class="linenos">15</span></a>    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
-</span><span id="setup_logger-16"><a href="#setup_logger-16"><span class="linenos">16</span></a>    <span class="n">handler</span> <span class="o">=</span> <span class="n">OurLogHandler</span><span class="p">()</span>
-</span><span id="setup_logger-17"><a href="#setup_logger-17"><span class="linenos">17</span></a>    <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">OurLogFormatter</span><span class="p">())</span>
-</span><span id="setup_logger-18"><a href="#setup_logger-18"><span class="linenos">18</span></a>    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
-</span><span id="setup_logger-19"><a href="#setup_logger-19"><span class="linenos">19</span></a>    <span class="k">return</span> <span class="n">logger</span>
+            <div class="pdoc-code codehilite"><pre><span></span><span id="setup_logger-119"><a href="#setup_logger-119"><span class="linenos">119</span></a><span class="k">def</span><span class="w"> </span><span class="nf">setup_logger</span><span class="p">(</span><span class="n">name</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">level</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">DegelLogger</span><span class="p">:</span>
+</span><span id="setup_logger-120"><a href="#setup_logger-120"><span class="linenos">120</span></a><span class="w">    </span><span class="sd">&quot;&quot;&quot;Set up and return a logger with the specified name.&quot;&quot;&quot;</span>
+</span><span id="setup_logger-121"><a href="#setup_logger-121"><span class="linenos">121</span></a>    <span class="n">logger</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">DegelLogger</span><span class="p">,</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+</span><span id="setup_logger-122"><a href="#setup_logger-122"><span class="linenos">122</span></a>    <span class="n">logger</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">level</span><span class="p">)</span>
+</span><span id="setup_logger-123"><a href="#setup_logger-123"><span class="linenos">123</span></a>    <span class="n">handler</span> <span class="o">=</span> <span class="n">DegelLogHandler</span><span class="p">()</span>
+</span><span id="setup_logger-124"><a href="#setup_logger-124"><span class="linenos">124</span></a>    <span class="n">handler</span><span class="o">.</span><span class="n">setFormatter</span><span class="p">(</span><span class="n">DegelLogFormatter</span><span class="p">())</span>
+</span><span id="setup_logger-125"><a href="#setup_logger-125"><span class="linenos">125</span></a>    <span class="n">logger</span><span class="o">.</span><span class="n">addHandler</span><span class="p">(</span><span class="n">handler</span><span class="p">)</span>
+</span><span id="setup_logger-126"><a href="#setup_logger-126"><span class="linenos">126</span></a>    <span class="k">return</span> <span class="n">logger</span>
 </span></pre></div>
 
 
