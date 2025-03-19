@@ -9,9 +9,17 @@ from degel_python_utils import setup_logger
 
 def test_setup_logger() -> None:
     """Test setup_logger enables logging and levels"""
-    setup_logger("my_app", logging.DEBUG)
-    logger = logging.getLogger("my_app")
-    assert logger.isEnabledFor(logging.DEBUG)
-    setup_logger("my_app", logging.INFO)
-    assert logger.isEnabledFor(logging.INFO)
-    assert not logger.isEnabledFor(logging.DEBUG)
+    logger = setup_logger("my_app", logging.DEBUG)
+    assert logger.isEnabledFor(logger.DEBUG)
+
+    logger.setLevel(logger.INFO)
+    assert logger.isEnabledFor(logger.INFO)
+    assert not logger.isEnabledFor(logger.DEBUG)
+
+    # Ensure custom levels exist
+    assert hasattr(logger, "major")
+    assert hasattr(logger, "minor")
+
+    setup_logger("my_app", logger.MAJOR)
+    assert logger.isEnabledFor(logger.MAJOR)
+    assert not logger.isEnabledFor(logger.INFO)

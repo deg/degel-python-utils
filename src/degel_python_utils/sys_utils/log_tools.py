@@ -7,27 +7,21 @@ from typing import Any, Literal, Self, Union, cast
 
 from blessings import Terminal
 
-
-def setup_logger(name: str, level: int = logging.DEBUG) -> logging.Logger:
-    """Set up and return a logger with the specified name."""
-    logger = logging.getLogger(name)
-    logger.setLevel(level)
-    handler = OurLogHandler()
-    handler.setFormatter(OurLogFormatter())
-    logger.addHandler(handler)
-    return logger
-
-
 log_prefix: contextvars.ContextVar[str] = contextvars.ContextVar(
     "log_prefix", default=""
 )
 
 
-class OurLogger(logging.Logger):
+class DegelLogger(logging.Logger):
     """Add some extra logging levels."""
 
+    DEBUG = logging.DEBUG
     MINOR = logging.INFO - 5
+    INFO = logging.INFO
     MAJOR = logging.WARNING - 5
+    WARNING = logging.WARNING
+    ERROR = logging.ERROR
+    CRITICAL = logging.CRITICAL
 
     logging.addLevelName(MINOR, "MINOR")
     logging.addLevelName(MAJOR, "MAJOR")
@@ -43,10 +37,10 @@ class OurLogger(logging.Logger):
             self._log(self.MAJOR, message, args, **kwargs)
 
 
-logging.setLoggerClass(OurLogger)
+logging.setLoggerClass(DegelLogger)
 
 
-class OurLogFormatter(logging.Formatter):
+class DegelLogFormatter(logging.Formatter):
     """Apply colors to the different logging levels."""
 
     def __init__(
@@ -69,6 +63,8 @@ class OurLogFormatter(logging.Formatter):
         record.asctime = (
             f"{time.strftime('%Y-%m-%d %H:%M:%S', ct)},{int(record.msecs):03}"
         )
+        color = ""
+        level = ""
         if self.use_color and self.t is not None:
             color = self.get_color(record.levelno)
             level = f"{record.levelname+':':<10}"
@@ -93,13 +89,13 @@ class OurLogFormatter(logging.Formatter):
         if not self.t:
             return ""
         return {
-            logging.DEBUG: self.t.red + self.t.bold,
-            OurLogger.MINOR: self.t.yellow,
-            logging.INFO: self.t.blue,
-            OurLogger.MAJOR: self.t.magenta,
-            logging.WARNING: self.t.yellow,
-            logging.ERROR: self.t.red,
-            logging.CRITICAL: self.t.red,
+            DegelLogger.DEBUG: self.t.red + self.t.bold,
+            DegelLogger.MINOR: self.t.yellow,
+            DegelLogger.INFO: self.t.blue,
+            DegelLogger.MAJOR: self.t.magenta,
+            DegelLogger.WARNING: self.t.yellow,
+            DegelLogger.ERROR: self.t.red,
+            DegelLogger.CRITICAL: self.t.red,
         }.get(levelno, self.t.normal)
 
     def formatException(self: Self, ei: Union[Exception, tuple]) -> str:
@@ -109,11 +105,21 @@ class OurLogFormatter(logging.Formatter):
         return super().formatException(cast(tuple, ei))
 
 
-class OurLogHandler(logging.StreamHandler):
+class DegelLogHandler(logging.StreamHandler):
     """Auto-exit the app if it hits a critical error."""
 
     def emit(self: Self, record: logging.LogRecord) -> None:
         """Exit application if writing a CRITICAL log line."""
         if record.levelno >= logging.CRITICAL:
-            raise RuntimeError("Exit forced by our logging handler")
+            raise RuntimeError("Exit forced by Degel logging handler")
         super().emit(record)
+
+
+def setup_logger(name: str, level: int = logging.DEBUG) -> DegelLogger:
+    """Set up and return a logger with the specified name."""
+    logger = cast(DegelLogger, logging.getLogger(name))
+    logger.setLevel(level)
+    handler = DegelLogHandler()
+    handler.setFormatter(DegelLogFormatter())
+    logger.addHandler(handler)
+    return logger
