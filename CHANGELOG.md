@@ -1,8 +1,12 @@
 # Changelog
 
+## [v1.0.1] - 2025-03-19
+
+- [BUG-FIX] Fix setupLogger to return correct type
+
 ## [v1.0.0] - 2025-03-18
 
-- Breaking change: Remove patent support. It does not belong in this library
+- [BREAKING]: Remove patent support. It does not belong in this library
 
 ## [v0.2.0] - 2025-02-09
 
