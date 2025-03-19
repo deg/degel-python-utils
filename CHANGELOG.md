@@ -1,5 +1,9 @@
 # Changelog
 
+## [v1.0.2] - 2025-03-19
+
+- [BUG-FIX] Advertise PEP 561 typing
+
 ## [v1.0.1] - 2025-03-19
 
 - [BUG-FIX] Fix setupLogger to return correct type
